@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Tokens land here in Prompt 5 (@theme, CSS-first). Intentionally empty for now. */
+@theme {
+}
+
+/* A-14 — one rule, site-wide, instead of a per-component tap-target fix.
+   Every tel: link is a primary conversion target; WCAG 2.5.8 wants 44px.
+   min-height is inert on a purely inline box, so tel links inside prose keep
+   their natural metrics and the measured type scale is untouched. */
+a[href^="tel:"] {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

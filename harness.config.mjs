@@ -23,20 +23,35 @@ export default {
 
   breakpoints: { diff: [390, 768, 1440], extra: [430], canonical: 1440 },
 
-  // Framework is UNPROFILED here -- Prompt 1 fills these in from the SAVED copy in
-  // reference/raw/, never the live site. Four distinct page builders have turned up across
-  // the fleet so far (Divi, Avada/Fusion, Elementor, and two bespoke themes), which is
-  // exactly why segmentation is per-site config and not baked into the package.
-  sectionCandidates: ['.elementor-top-section', '.e-con.e-parent', '.et_pb_section', '.fusion-fullwidth', 'main > section', 'section'],
+  // ---- segmentation (PROFILED, Prompt 1, from the SAVED copy in reference/raw) --------
+  // Reference builder: GoDaddy Website Builder 8.0 ("Starfield"), the "x" theme. NOT Divi,
+  // Elementor, Avada or a bespoke theme -- a fifth builder for the fleet.
+  //
+  // The page skeleton is:  [data-ux="Page"] > div > div(band) > div[data-ux="Header|Widget|WidgetBanner"]
+  // The band wrapper carries NO data-ux of its own, which is why it is selected positionally.
+  // `section[data-ux="Section"]` is NOT sufficient on its own: the two WidgetBanner bands
+  // (/about "Built on Trust", /services CTA banner) are bands but contain no <section>, so
+  // that selector silently drops them (6 bands -> 5, 4 bands -> 3).
+  //
+  // There are ZERO <header>, <footer> and <main> tags in the reference markup. Bare
+  // header/footer in chromeSelectors therefore match nothing on the ref side; they exist
+  // for OUR side only, where the shell declares them, and are backed up by identityAttr.
+  sectionCandidates: [
+    '[data-ux="Page"] > div > div',
+    'section[data-ux="Section"]',
+    'main > section',
+    'section',
+  ],
   // EXACT selectors only -- config.mjs REFUSES a [class*=] matcher at startup, because one
   // matched <body class="pb-callbar"> on a sibling and containment-dedup then deleted
   // HEADER and FOOTER from every capture.
   chromeSelectors: ['header', 'footer'],
-  headerSelector: 'header',
-  navToggleSelector: 'button[aria-controls], .menu-toggle, .hamburger',
-  drawerSelector: '[data-drawer], .mobile-menu, .nav-drawer',
-  ctaSelector: 'a[href^="tel:"], button, [class*=btn], [class*=button]',
-  logoSelector: 'header img, .logo img, #logo',
+  identityAttr: 'data-section',
+  headerSelector: '[data-ux="Header"], header',
+  navToggleSelector: '[data-aid="HAMBURGER_MENU_LINK"], button[aria-controls], .menu-toggle',
+  drawerSelector: '[data-ux="NavigationDrawer"], [data-drawer], .nav-drawer',
+  ctaSelector: 'a[href^="tel:"], button, [data-aid="HEADER_CTA_BTN"], [data-ux="ButtonPrimary"]',
+  logoSelector: '[data-aid="HEADER_LOGO_IMAGE_RENDERED"], header img, .logo img, #logo',
   iconFontFamilies: /fontawesome|icomoon|material|elementskit|awb-icons|eicons/i,
 
   thresholds: { fidelity: 2, struct: 5, token: 0 },
