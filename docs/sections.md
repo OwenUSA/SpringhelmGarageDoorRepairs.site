@@ -62,8 +62,8 @@ content is structurally equivalent to ours. Ten of eleven fleet sites landed at 
 |---|---|---|---|---|
 | `site-header` | (inside s00) | — | NOVEL | lifted out of the reference's merged header+hero band |
 | `hero` | s00 `...eastern-nc-s-only-owens-corning-pl` | 901 | ADAPTED | tagline, sub-tagline, call CTA, background photo slot |
-| `mission` | s01 `135f9822` | 213 | ADAPTED | one-line proposition band — "a real person answers the phone" |
-| `services-grid` | s02 `...-blog` | 2110 | ADAPTED | blog card grid → our eight services |
+| `services-grid` | s02 `...-blog` | 2110 | ADAPTED | blog card grid → our eight services. **Moved up (R1).** |
+| `mission` | s01 `135f9822` | 213 | ADAPTED | one-line proposition band — "a real person answers the phone". **Moved down (R1)**, so the proposition lands after the reader has seen what we fix. |
 | `service-area-map` | — | — | NOVEL | D-08 requires a home map; the reference embeds none |
 | `site-footer` | s03 `aa99edc2` | 386 | ADAPTED | NAP, hours, SERVICE_AREA sentence; all `/locations/*` links scrubbed |
 | `mobile-call-bar` | — | — | NOVEL | D-04 sticky call bar; the reference has no sticky element at all |
@@ -73,10 +73,10 @@ content is structurally equivalent to ours. Ten of eleven fleet sites landed at 
 | our section | ref band | h@1440 | class | note |
 |---|---|---|---|---|
 | `site-header` | s00 `8bfc40ab` | 136 | ADAPTED | the nav bar proper |
-| `about-intro` | s01 `...-about-us` | 1604 | ADAPTED | who we are; no credentials or years invented (D-14) |
-| `about-banner` | s02 `...-built-on-trust-driven-by-quality` | 772 | ADAPTED | full-bleed statement band |
+| `about-banner` | s02 `...-built-on-trust-driven-by-quality` | 772 | ADAPTED | full-bleed statement band. Reference fills it with a review widget (aggregate rating + three attributed reviews); ours carries `[TESTIMONIAL PLACEHOLDER]` blocks per D-13. **Moved up (R2).** |
+| `about-intro` | s01 `...-about-us` | 1604 | ADAPTED | who we are; no credentials or years invented (D-14). **Moved down (R2).** |
 | — | s03 `...-my-blog` | 2747 | **DELETED** | blog feed; out of scope (D-01) |
-| `about-cta` | s04 `...-connect-with-us` | 224 | ADAPTED | social-links band → call-us band. We invent no social accounts. |
+| `about-cta` | s04 `...-connect-with-us` | 224 | ADAPTED | social-links band → a short call band. We invent no social accounts. Reference copy in this band is 15 characters; ours is 14. |
 | `site-footer` | s05 `aa99edc2` | 386 | ADAPTED | shared shell |
 | `mobile-call-bar` | — | — | NOVEL | shared shell |
 
@@ -85,9 +85,9 @@ content is structurally equivalent to ours. Ten of eleven fleet sites landed at 
 | our section | ref band | h@1440 | class | note |
 |---|---|---|---|---|
 | `site-header` | s00 `8bfc40ab` | 136 | ADAPTED | shared shell |
-| `services-banner` | s01 `...-experience-quality-roofing-service` | 277 | ADAPTED | CTA banner; no price, no response time (D-12, D-17) |
-| `services-list` | s02 `...-expert-roofing-services-for-your-h` | 1065 | ADAPTED | the eight services from CONSTANTS |
+| `services-list` | s02 `...-expert-roofing-services-for-your-h` | 1065 | ADAPTED | the eight services from CONSTANTS, **regrouped by SYMPTOM (G1)**, each appearing in exactly one group. **Moved up (R3).** |
 | `services-faq` | — | — | NOVEL | in-page FAQ, `/services` only; the reference has zero accordions |
+| `services-banner` | s01 `...-experience-quality-roofing-service` | 277 | ADAPTED | CTA banner; no price, no response time (D-12, D-17). **Moved to the bottom (R3)**, where a call CTA belongs once the reader has found their symptom. |
 | `site-footer` | s03 `aa99edc2` | 386 | ADAPTED | shared shell |
 | `mobile-call-bar` | — | — | NOVEL | shared shell |
 
@@ -96,10 +96,10 @@ content is structurally equivalent to ours. Ten of eleven fleet sites landed at 
 | our section | ref band | h@1440 | class | note |
 |---|---|---|---|---|
 | `site-header` | s00 `8bfc40ab` | 136 | ADAPTED | shared shell |
-| `contact-form` | s01 `...-contact-us` | 969 | ADAPTED | D-05 fields only. Reference's Email\*, marketing consent and reCAPTCHA are all dropped. |
+| `contact-connect` | s03 `...-connect-with-us` | 224 | ADAPTED | **RENAMED** from `contact-hours`, and **moved to the top (R4)**. The page's point is the phone number, so it is not buried under a form. Social links → a short call band; 15 reference characters, 16 of ours. |
+| `contact-form` | s01 `...-contact-us` | 969 | ADAPTED | D-05 fields only. Reference's Email\*, marketing consent and reCAPTCHA are all dropped. **The NAP block and the hours live here**, which is where the reference band already carried them. |
 | `contact-map` | — | — | NOVEL | D-08 map beside the form, embedded by MAP_COORDS |
 | — | s02 `...-locations` | 533 | **DELETED** | multi-city locations grid; D-02 |
-| `contact-hours` | s03 `...-connect-with-us` | 224 | ADAPTED | social-links band → NAP + hours block |
 | `site-footer` | s04 `aa99edc2` | 386 | ADAPTED | shared shell |
 | `mobile-call-bar` | — | — | NOVEL | shared shell |
 
@@ -144,10 +144,56 @@ Column order is fixed: `| /route | ref-section-id | our-section-id | CLASS | rea
 | /contact | s01-0b5ed9f0-d323-4637-8f34-841c8a524529-contact-us | contact-form | ADAPTED | form band retained, fields replaced with the D-05 set; email input, consent copy and reCAPTCHA dropped per D-03 and D-15 |
 | /contact |  | contact-map | NOVEL | D-08 map beside the form, embedded by MAP_COORDS; reference embeds none |
 | /contact | s02-bb818e7c-dc06-4053-af02-5084250a3c5c-locations | contact-locations | DELETED | multi-city locations grid, deleted wholesale per D-02 |
-| /contact | s03-10fb85d2-e1cf-4b76-aa86-f4fec0038f75-connect-with-us | contact-hours | ADAPTED | social band retained as geometry, content swapped to NAP plus hours |
+| /contact | s03-10fb85d2-e1cf-4b76-aa86-f4fec0038f75-connect-with-us | contact-connect | ADAPTED | social band retained as geometry, content swapped to a short call band; NAP and hours moved into contact-form, where the reference band already carried them |
 | /contact | s04-aa99edc2-9e1b-47b8-9184-7241d5a5a3dd | site-footer | ADAPTED | shared shell |
 | /contact |  | mobile-call-bar | NOVEL | shared shell, D-04 |
 | /privacy | s00-8bfc40ab-0a94-44df-9c3c-e207b8bf291c | site-header | ADAPTED | shared shell nav bar |
 | /privacy | s01-5fa47a62-93ca-4033-8c12-75bea1c9a6c3-privacy-policy | privacy-body | ADAPTED | policy band retained, body replaced with a policy matching what we actually ship per D-16 |
 | /privacy | s02-aa99edc2-9e1b-47b8-9184-7241d5a5a3dd | site-footer | ADAPTED | shared shell |
 | /privacy |  | mobile-call-bar | NOVEL | shared shell, D-04 |
+
+---
+
+## Prompt 3 amendments — what moved, what was renamed, what was reclassified
+
+Both tables above were edited **together**, as a single machine twin pair. Class counts are
+unchanged: **0 FIDELITY / 20 ADAPTED / 9 NOVEL / 2 DELETED = 31 rows.**
+
+### Reordering, dropping and regrouping are NOT class changes
+
+Stated explicitly because it is the easy mistake: `R1`–`R4` move sections, `D1`/`D2` delete
+them, and `G1` regroups the service list. None of that alters what a section IS relative to
+its reference counterpart, so none of it moves a row between FIDELITY / ADAPTED / NOVEL.
+Pairing survives reordering because the harness pairs on **declared identity**, not ordinal
+(`_shared/harness/test/selftest.mjs`, defect #2).
+
+### One rename
+
+`/contact` `contact-hours` → **`contact-connect`**, in both tables. The old name promised
+NAP-plus-hours in a band whose reference counterpart is fifteen characters long
+("Connect With Us" plus a row of social icons). Hours and address now sit in `contact-form`,
+which is where the reference's own form band already carried them — its s01 contains the
+address, a two-branch phone list and a Mon–Sun hours table. The rename makes the contract
+describe the band that is actually being built.
+
+### Reclassification: examined five rows, changed zero classes
+
+Every ADAPTED row on this site has swapped content by definition, so "content changed"
+cannot be the trigger — the question is whether any row's reference counterpart has stopped
+informing our band at all. Five were candidates:
+
+| row | why it looked like a reclassification | verdict |
+|---|---|---|
+| `/about` `about-banner` | The reference band is a third-party review widget: an aggregate rating, "38 people", and three attributed customer reviews. D-13 forbids inventing any of it and bans the JSON-LD outright, so **none** of its information survives. | **Stays ADAPTED.** The band's geometry — a full-bleed 772px statement banner with a heading and a three-card row — is exactly what we build, with `[TESTIMONIAL PLACEHOLDER]` blocks in the cards. Downgrading it to NOVEL would surrender the structural measurement of a real 772px band and buy nothing. |
+| `/` `services-grid` | Reference band is a blog feed (category chips, post cards, excerpts, dates); ours is eight service cards. | **Stays ADAPTED.** The grid is the reuse, and it is the only rich card-grid geometry the whole reference offers. |
+| `/services` `services-list` | Ours is regrouped by symptom rather than by system. | **Stays ADAPTED.** A regroup is a reordering of the same cards inside the same grid. |
+| `/privacy` `privacy-body` | The reference policy describes cookies, analytics, email collection and reCAPTCHA. We ship none of those, so roughly half its clauses have no counterpart and the rest are inverted rather than swapped. | **Stays ADAPTED.** Structurally it remains a long prose band of heading/paragraph pairs, and its 2509-character target is both reachable and worth testing the band against. |
+| `/` `mission` | The reference band's second paragraph is entirely a licence-and-insurance credential claim, which D-14 forbids us from inventing. | **Stays ADAPTED.** Same purpose, same shape: a short statement band. The credential renders as a visible `TODO(fact)`. |
+
+### No ADAPTED or FIDELITY row has an empty ref-section-id
+
+Checked against Table B after the edits. The empty-ref rows are `site-header` on `/` only
+(NOVEL by contract decision 1), `service-area-map`, `contact-map`, `services-faq`, and
+`mobile-call-bar` on all five routes — every one NOVEL, every one legitimately unpaired. An
+ADAPTED row with an empty ref column would skip both the structural comparison and the
+length rule silently; `diff.mjs` warns, and there is nothing here for it to warn about.
