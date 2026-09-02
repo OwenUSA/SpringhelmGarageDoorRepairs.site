@@ -2,7 +2,9 @@
   "name": "springhelmgaragedoorrepairs",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": "22.20.0" },
+  "engines": {
+    "node": "22.20.0"
+  },
   "type": "module",
   "scripts": {
     "dev": "next dev -p 3110",
@@ -31,5 +33,14 @@
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3",
     "typescript": "^5.9.3"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "sharp"
+    ],
+    "ignoredBuiltDependencies": [
+      "playwright"
+    ]
   }
 }
