@@ -1,0 +1,92 @@
+/* ServicesList — BAND RULES: no padding, no line-height on `.list` (the band element).
+   Vertical rhythm and leading live on `.band-inner`/`.inner` (known-divergence §1).
+   Target box.h: 390 -> 2902px, 768 -> 1546px, 1440 -> 1065px (short: two-column at 1440). */
+
+.inner {
+  max-width: var(--container-band);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.intro {
+  max-width: var(--container-prose);
+  font-size: var(--text-lead);
+}
+
+.groupGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+  margin-top: var(--spacing-3);
+}
+@media (min-width: 1024px) {
+  .groupGrid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  scroll-margin-top: calc(var(--header-h) + var(--spacing-4));
+}
+@media (min-width: 768px) {
+  .group { flex-direction: row; align-items: flex-start; }
+}
+
+.groupImage {
+  border-radius: var(--radius-sm);
+  width: 100%;
+  height: auto;
+}
+@media (min-width: 768px) {
+  .groupImage { width: 160px; height: 80px; flex: none; }
+}
+
+.groupBody {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.itemList {
+  margin: 0;
+  padding-inline-start: var(--spacing-5);
+  color: var(--color-neutral-900);
+}
+
+.groupActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-2);
+}
+
+.groupBtn {
+  padding-block: var(--spacing-2);
+}
+
+.groupLink {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-600);
+  text-decoration: underline;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.factRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-4);
+}
+
+.factChip {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-600);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-2) var(--spacing-3);
+}

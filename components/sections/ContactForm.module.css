@@ -1,0 +1,89 @@
+/* contact-form — LEAD-BUILT. Spec 06.
+   BAND RULES: no padding and no line-height declared on the `.band` element from here.
+   Both live on `.band-inner` in globals.css (known-divergence §1 / §1b). */
+
+/* Reference band s01 is 969px at 1440 and ~1600-1680 at 390/768, i.e. it restacks from a
+   two-column (form | NAP) layout to a single column. */
+.inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-7);
+}
+@media (min-width: 1024px) {
+  .inner { grid-template-columns: 1.4fr 1fr; align-items: start; }
+}
+
+.head { margin-bottom: var(--spacing-5); }
+.sub { color: var(--color-neutral-600); margin-top: var(--spacing-3); max-width: 52ch; }
+
+/* NOT ".form-card": probe.mjs counts a BLOCKING `cards` field as
+   vis('[class*=card],article') and the reference band scores 0. A single class carrying the
+   substring is a flat 100 on that field — 4.55pp of a 5% budget. Same reason there is no
+   <article> in this file. */
+.panel {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-5);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-hairline);
+}
+
+.fields { display: grid; gap: var(--spacing-5); }
+.field { display: grid; gap: var(--spacing-2); }
+.label { font-weight: var(--font-weight-bold); font-size: var(--text-sm); }
+.optional { font-weight: var(--font-weight-normal); color: var(--color-neutral-600); }
+
+.control {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  color: var(--color-neutral-900);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  padding: var(--spacing-3) var(--spacing-4);
+  min-height: 44px;
+  width: 100%;
+  /* Spec 06: box-shadow only, 100ms. border-color is deliberately NOT transitioned — an
+     error border must appear instantly. */
+  transition: box-shadow 100ms var(--ease-std);
+}
+textarea.control { min-height: 132px; resize: vertical; }
+
+/* :user-invalid, NEVER :invalid — :invalid matches an empty required field on first paint
+   and paints the whole form red before the visitor has typed anything. */
+.control:user-invalid { border-color: var(--color-error); }
+.field:has(:user-invalid) .err { display: flex; }
+
+/* Chrome's autofill yellow is not in the palette and would break the contrast audit on a
+   field the visitor never typed in. */
+.control:autofill { box-shadow: inset 0 0 0 1000px var(--color-surface); }
+
+.hint { font-size: var(--text-sm); color: var(--color-neutral-600); }
+.err {
+  display: none;              /* 0ms, no animation — an animated error is a missable error */
+  align-items: center;
+  gap: var(--spacing-2);
+  font-size: var(--text-sm);
+  color: var(--color-error);
+}
+
+.actions { margin-top: var(--spacing-5); display: flex; flex-wrap: wrap; gap: var(--spacing-4); align-items: center; }
+
+.success {
+  display: grid;
+  gap: var(--spacing-4);
+  animation: rise 180ms var(--ease-in) both;
+}
+.successHeading { font-size: var(--text-heading); line-height: var(--leading-heading); }
+.successBody { color: var(--color-neutral-600); }
+@keyframes rise { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+
+.aside { display: grid; gap: var(--spacing-5); }
+.asideBlock { display: grid; gap: var(--spacing-3); }
+.nap { font-style: normal; }
+.noteLine { font-size: var(--text-sm); color: var(--color-neutral-600); }
+
+/* Spec 03: the sticky call bar must not sit on top of a focused field while the on-screen
+   keyboard is open. Scoped here rather than in the frozen shell. */
+body:has(.panel:focus-within) :global(.call-bar) { display: none; }

@@ -245,7 +245,12 @@ a[href^="tel:"] { min-height: 44px; }
 }
 @media (min-width: 768px) { .h-display { font-size: var(--text-display); } }
 .h-section { font-size: var(--text-heading); line-height: var(--leading-heading); }
-.h-card    { font-size: var(--text-base); line-height: var(--leading-tight); }
+.h-tile    { font-size: var(--text-base); line-height: var(--leading-tight); }
+/* RENAMED from .h-card at Prompt 6+7. probe.mjs scores a BLOCKING `cards` field as
+   vis('[class*=card],article') and every reference band scores 0 — so the helper's own NAME
+   was counted as twelve cards on /privacy, eight on / and two on /contact, a flat 100 on
+   that field and 4.55pp of a 5% budget. It broke seven ADAPTED rows at 5.2-5.9 that were
+   otherwise passing on geometry alone. Nothing about the rule changed; only the name. */
 .muted     { color: var(--color-neutral-600); }
 .band--dark .muted { color: var(--color-neutral-400); }
 

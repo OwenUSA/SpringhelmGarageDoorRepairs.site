@@ -1,0 +1,24 @@
+/* Mission — BAND RULES: no padding, no line-height on `.mission` (the band element).
+   Vertical rhythm and leading live on `.band-inner`/`.inner` (known-divergence §1). */
+
+.inner {
+  max-width: var(--container-prose);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-2);
+}
+
+.fact {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-400);
+  border: 1px solid var(--color-neutral-400);
+  border-radius: var(--radius-xs);
+  padding: var(--spacing-2) var(--spacing-3);
+}

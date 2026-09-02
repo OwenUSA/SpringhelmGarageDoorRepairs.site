@@ -1,0 +1,68 @@
+/* AboutBanner — BAND RULES: no padding, no line-height on `.banner` (the band element).
+   Vertical rhythm and leading live on `.band-inner`/`.inner` (known-divergence §1). */
+
+.banner {
+  /* Dark gradient scrim over the placeholder so painted text tone is genuinely dark,
+     matching the Hero.module.css pattern. */
+  background-image:
+    linear-gradient(180deg, rgba(34, 16, 20, 0.78) 0%, rgba(34, 16, 20, 0.68) 100%),
+    url('/placeholders/about-banner-bg-alt.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-surface);
+}
+@media (min-width: 768px) {
+  .banner {
+    background-image:
+      linear-gradient(180deg, rgba(34, 16, 20, 0.78) 0%, rgba(34, 16, 20, 0.68) 100%),
+      url('/placeholders/about-banner-bg.svg');
+  }
+}
+
+/* Reference band s02 measures 803px at 390, 794px at 768, 772px at 1440 — nearly flat
+   across breakpoints, so a fixed min-height on the inner container is legitimate here
+   (the reference band is a fixed-height full-bleed banner). */
+.inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-height: 803px;
+}
+@media (min-width: 768px) {
+  .inner { min-height: 794px; }
+}
+@media (min-width: 1440px) {
+  .inner { min-height: 772px; }
+}
+
+.sub {
+  max-width: var(--container-prose);
+  font-size: var(--text-lead);
+  color: var(--color-neutral-400);
+}
+
+.quoteRow {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-3);
+}
+@media (min-width: 1024px) {
+  .quoteRow { flex-direction: row; }
+}
+
+.quoteBlock {
+  flex: 1;
+  margin: 0;
+  padding: var(--spacing-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-neutral-400);
+}
+.quoteBlock p { margin: 0; }
+
+.note {
+  margin-top: var(--spacing-4);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-400);
+}

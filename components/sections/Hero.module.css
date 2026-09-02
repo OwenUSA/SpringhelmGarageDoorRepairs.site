@@ -1,0 +1,45 @@
+/* Hero — LEAD-BUILT (STEP 1 of the Prompt 6+7 wave).
+   BAND RULES, both of them: this file declares NO padding and NO line-height on `.band`.
+   Vertical rhythm and leading live on `.band-inner` in globals.css (known-divergence §1
+   and §1b). Everything below is either a background layer or inner-container geometry. */
+
+.hero {
+  /* The scrim is a real gradient layer over the placeholder, not an opacity trick: white
+     display type has to land on a genuinely dark painted tone for rendertruth.mjs, and the
+     placeholder's dominant sample is only #3c4543. */
+  background-image:
+    linear-gradient(180deg, rgba(34, 16, 20, 0.78) 0%, rgba(34, 16, 20, 0.68) 100%),
+    url('/placeholders/home-hero-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-surface);
+}
+
+/* Reference band s00 measures 596px at 390 AND at 768, and 901px at 1440. The step is the
+   reference's own min-1024 rule (docs/profile.md §3), which is recorded and deliberately
+   not added to BP_SET. */
+.heroInner {
+  min-height: 596px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--spacing-4);
+  max-width: var(--container-band);
+}
+@media (min-width: 1024px) {
+  .heroInner { min-height: 901px; }
+}
+
+.heading { max-width: 18ch; }
+.sub {
+  max-width: var(--container-prose);
+  font-size: var(--text-lead);
+  color: var(--color-neutral-400);
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-4);
+  margin-top: var(--spacing-3);
+}

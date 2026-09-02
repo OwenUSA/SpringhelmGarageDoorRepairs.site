@@ -1,0 +1,33 @@
+/* PrivacyBody — BAND RULES: no padding, no line-height on `.privacy` (the band element).
+   Vertical rhythm and leading live on `.band-inner`/`.inner`/`.textCol`. */
+
+.inner {
+  display: flex;
+  justify-content: center;
+}
+
+.textCol {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+  max-width: var(--container-prose);
+  line-height: var(--leading-body);
+}
+
+.notice {
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-xs);
+  padding: var(--spacing-3);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-600);
+}
+
+.updated {
+  font-size: var(--text-sm);
+  color: var(--color-neutral-600);
+}
+
+.address {
+  font-style: normal;
+  color: var(--color-neutral-600);
+}

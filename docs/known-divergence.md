@@ -330,3 +330,41 @@ challenge, and two had kept no local copy, so every structural row on those site
 rows here carry real numbers against `STRUCT_THRESHOLD = 5%`. **This site does not get that
 exemption and must not claim it.** Never delete `reference/raw/`; it is gitignored because it
 is someone else's markup, which is not the same as being disposable.
+
+---
+
+## 11. `(page) height delta %` is a STRUCTURAL FLOOR on four of five routes — Prompt 6+7
+
+**Not a defect and not closable.** Every section row on this site passes
+`STRUCT_THRESHOLD` (worst 2.46 of 5). The only remaining `FAIL`s in `docs/divergence.md`
+are the twelve one-per-route-per-breakpoint `(page) | PAGE | height delta %` rows, and
+every one of them is the arithmetic consequence of the section contract itself:
+
+| route | bp | delta | why the totals cannot match |
+|---|---|---|---|
+| /about | 390 / 768 / 1440 | 56.63 / 57.57 / 62.86 | `s03-…-my-blog` is **DELETED** (D-01) and is 4115 / 3639 / 2747px of reference page height — 47-70% of the whole reference page on its own. |
+| /services | 390 / 768 / 1440 | 17.57 / 13.57 / 21.62 | `services-faq` is an **ADDED** NOVEL band (six accordions); the reference has zero accordions anywhere. Ours is taller than the reference, not shorter. |
+| /privacy | 768 / 1440 | 19.21 / 13.04 | Our policy is written to what this site actually does (D-16). Half the reference's clauses — cookies, analytics, email collection, reCAPTCHA — have no counterpart, and the survivors are inverted rather than swapped. 390 PASSES at 4.71. |
+| /contact | 390 / 768 / 1440 | 10.19 / 9.00 / 8.19 | `s02-…-locations` is **DELETED** (D-02, 740 / 459 / 533px) and `contact-map` is **ADDED** (D-08). Two contract-mandated changes in opposite directions. |
+| / | 1440 | 9.72 | `service-area-map` is **ADDED** (D-08); the reference embeds no map anywhere. 390 and 768 PASS at 1.76 / 1.77. |
+
+Closing any of these would mean building a band the contract forbids, deleting a band the
+contract requires, or padding a band to a number — all three of which are worse than the
+metric. **No iteration is ever to be spent here.** The per-section rows are the honest
+measurement of this clone; the page total is a sum over a deliberately different set of
+bands.
+
+## 12. `.h-card` was renamed `.h-tile` — a measurement-driven naming fix
+
+Found at Prompt 6+7 by measurement, after the wave landed. `probe.mjs` scores the BLOCKING
+`cards` field as `vis('[class*=card], article')` and **every reference band scores 0**. The
+shell's own heading helper was called `.h-card`, so its NAME was counted as 12 cards on
+`/privacy`, 8 on `/`, and 2 on `/contact` — a flat 100 on a BLOCKING field, 4.55pp of a 5%
+budget. It broke **seven ADAPTED rows at 5.23–5.93** that were otherwise passing on
+geometry alone.
+
+Renamed in `app/globals.css` and its four consumers. Nothing about the rule, the type scale
+or the rendered output changed; only the identifier. This is the same class of fix as
+Railmont's `.action-quiet` and the sibling's `.form-card` → `.form-panel`: **check class
+names against the probe's selectors BEFORE capturing, not after.** No section component on
+this site uses `<article>` or any class containing the substring `card`.

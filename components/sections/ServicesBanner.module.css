@@ -1,0 +1,40 @@
+/* ServicesBanner — BAND RULES: no padding, no line-height on `.banner` (the band element).
+   Vertical rhythm lives on `.band-inner--tight`/`.inner` (known-divergence §1).
+   Target box.h: 390 -> 388px, 768 -> 294px, 1440 -> 277px. Short band. */
+
+.banner {
+  background-image:
+    linear-gradient(180deg, rgba(34, 16, 20, 0.72) 0%, rgba(34, 16, 20, 0.6) 100%),
+    url('/placeholders/services-banner-bg-alt.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: var(--color-surface);
+}
+@media (min-width: 768px) {
+  .banner {
+    background-image:
+      linear-gradient(180deg, rgba(34, 16, 20, 0.72) 0%, rgba(34, 16, 20, 0.6) 100%),
+      url('/placeholders/services-banner-bg.svg');
+  }
+}
+
+.inner {
+  max-width: var(--container-band);
+  min-height: 292px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: var(--spacing-4);
+}
+@media (min-width: 768px) {
+  .inner { min-height: 198px; }
+}
+@media (min-width: 1024px) {
+  .inner { min-height: 181px; }
+}
+
+.heading {
+  max-width: 28ch;
+}

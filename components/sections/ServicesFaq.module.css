@@ -1,0 +1,66 @@
+/* ServicesFaq — NOVEL, token conformance only. No padding / line-height override on the
+   band element (there is no module class on it at all — see ServicesFaq.tsx). */
+
+.inner {
+  max-width: var(--container-band);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.faq {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+}
+
+.item {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  padding-inline: var(--spacing-4);
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-4);
+  min-height: 44px;
+  padding-block: var(--spacing-3);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-900);
+  cursor: pointer;
+  list-style: none;
+}
+.summary::-webkit-details-marker { display: none; }
+
+.chevron {
+  flex: none;
+  color: var(--color-neutral-600);
+  transition: transform 200ms ease;
+}
+.item[open] .chevron { transform: rotate(90deg); }
+
+.body {
+  interpolate-size: allow-keywords;
+}
+.item::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition: block-size 200ms ease, content-visibility 200ms allow-discrete;
+}
+.item[open]::details-content {
+  block-size: auto;
+}
+
+.body p {
+  padding-bottom: var(--spacing-4);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron,
+  .item::details-content {
+    transition: none;
+  }
+}

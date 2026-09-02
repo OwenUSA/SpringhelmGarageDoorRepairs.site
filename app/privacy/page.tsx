@@ -1,11 +1,15 @@
-// STUB: route placeholder. Content lands in the Prompt 6+7 build wave.
-// Metadata is NOT stubbed and is NOT literal here — it is read from content/copy.ts.
+// /privacy — route file is LEAD-OWNED. D-16.
 import type { Metadata } from 'next';
 import { copy } from '@/content/copy';
+import PrivacyBody from '@/components/sections/PrivacyBody';
 
 const meta = copy.routes['/privacy'].meta;
 export const metadata: Metadata = { title: meta.title, description: meta.description };
 
 export default function Page() {
-  return <main id="main" data-route="/privacy">{/* privacy */}</main>;
+  return (
+    <main id="main" data-route="/privacy">
+      <PrivacyBody />
+    </main>
+  );
 }

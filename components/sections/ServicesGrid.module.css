@@ -1,0 +1,89 @@
+/* ServicesGrid — BAND RULES: no padding, no line-height on `.grid` (the band element).
+   Vertical rhythm and leading live on `.band-inner`/`.inner` (known-divergence §1). */
+
+.inner {
+  max-width: var(--container-band);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-5);
+}
+
+.intro {
+  max-width: var(--container-prose);
+  font-size: var(--text-lead);
+}
+
+.tileGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--spacing-6);
+  margin-top: var(--spacing-3);
+}
+@media (min-width: 768px) {
+  .tileGrid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (min-width: 1024px) {
+  .tileGrid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Link-overlay tile — behaviour spec docs/behavior/04-service-card.md, adapted names. */
+.tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding: var(--spacing-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-hairline);
+  background-color: var(--color-surface);
+  transition: transform 150ms var(--ease-std), box-shadow 150ms var(--ease-std),
+    border-color 150ms var(--ease-std);
+}
+.tile img { border-radius: var(--radius-xs); }
+
+.tileLink {
+  color: var(--color-neutral-900);
+  text-decoration: none;
+  /* WCAG 2.5.8. The link-overlay ::after makes the WHOLE tile clickable, but
+     rendertruth.mjs measures the anchor's own painted box and an inline anchor inside an
+     h3 is 18px tall — eight findings at 390 on the first sweep. inline-flex plus a
+     min-height gives the control a real target box without changing the heading's type
+     scale, which is what the structural diff measures. */
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+}
+.tileLink::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .tile:has(:hover) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-raised);
+    border-color: var(--color-primary);
+  }
+}
+.tile:has(:focus-visible) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-raised);
+  border-color: var(--color-primary);
+}
+.tile:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-hairline);
+  border-color: var(--color-primary);
+}
+
+.note {
+  margin-top: var(--spacing-2);
+  max-width: var(--container-prose);
+}
+
+.cta {
+  align-self: flex-start;
+  margin-top: var(--spacing-3);
+}

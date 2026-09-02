@@ -41,3 +41,18 @@ Not because they are known, but because they are **decided not to exist**:
 - **After-hours or 24/7 emergency service.** D-06. Hours are 07:00–19:00, seven days, one
   block. The copy says so and says nothing more.
 - **Any email address.** D-03. Not a missing fact — a banned one.
+
+## Verified rendered — Prompt 6+7
+
+All eleven keys now render VISIBLY on a built page (they were copy-only until the wave):
+
+| key | route | rendered as |
+|---|---|---|
+| `years`, `licence` | `/` `mission` | two bordered `TODO(fact):` chips on the dark statement band |
+| `teamSize`, `years`, `insurance` | `/about` `about-intro` | a chip row occupying the slot where the reference puts a manufacturer certification graphic (D-14 — the badge slot is a chip, not a badge) |
+| — testimonials | `/about` `about-banner` | three literal `[TESTIMONIAL PLACEHOLDER]` blockquotes plus a visible `TODO(fact): customer testimonials with permission`. No name, date, star, count, and **no `Review` or `AggregateRating` JSON-LD anywhere on the site** (D-13) |
+| `warranty`, `brands`, `responseTime` | `/services` `services-list` | a chip row under the symptom groups |
+| `logo` | `/` … `/privacy` `site-header` | the text wordmark is the shipping state, not a placeholder to measure (see `assets/INVENTORY.md`) |
+| policy adoption date | `/privacy` `privacy-body` | a visible `TODO(fact):` line under the heading |
+
+Count in `content/copy.ts`: **21 `TODO(fact):` occurrences, 11 distinct facts.**

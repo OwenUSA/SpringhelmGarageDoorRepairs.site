@@ -1,11 +1,20 @@
-// STUB: route placeholder. Content lands in the Prompt 6+7 build wave.
-// Metadata is NOT stubbed and is NOT literal here — it is read from content/copy.ts.
+// /services — route file is LEAD-OWNED. R3: the CTA banner moves to the bottom, after the
+// symptom list and the FAQ. A2: services-faq is NOVEL; the reference has zero accordions.
 import type { Metadata } from 'next';
 import { copy } from '@/content/copy';
+import ServicesList from '@/components/sections/ServicesList';
+import ServicesFaq from '@/components/sections/ServicesFaq';
+import ServicesBanner from '@/components/sections/ServicesBanner';
 
 const meta = copy.routes['/services'].meta;
 export const metadata: Metadata = { title: meta.title, description: meta.description };
 
 export default function Page() {
-  return <main id="main" data-route="/services">{/* services */}</main>;
+  return (
+    <main id="main" data-route="/services">
+      <ServicesList />
+      <ServicesFaq />
+      <ServicesBanner />
+    </main>
+  );
 }
