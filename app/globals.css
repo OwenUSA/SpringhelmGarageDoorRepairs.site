@@ -201,6 +201,16 @@ a[href^="tel:"] { min-height: 44px; }
 .band {
   padding: 0;              /* ZERO. ALWAYS. The reference band wrapper measures 0. */
   margin: 0;
+  /* SAME REASON AS THE PADDING RULE, and measured the same way. Every reference band
+     wrapper computes `line-height: normal` — GoDaddy sets leading on the leaf text, never
+     on the band. Ours inherited 24px from `body`, which the comparator scores as a flat
+     100% on a BLOCKING field: 4.55pp of a 5% budget on EVERY ADAPTED row before geometry
+     is looked at. It was the whole of the shell's residual — header 8.54 -> 4.00 and
+     footer 6.03 -> 1.48 at 390 with this one line.
+     The leading itself is NOT lost: it moves to the inner containers below, which is where
+     the reference carries it too, so no painted text changes metrics. Do not "restore"
+     this to body-inherited leading on the band. */
+  line-height: normal;
   /* Spec 02 failure mode: position:sticky dies silently if an ancestor sets overflow or a
      transform. No band may set either. */
 }
@@ -209,6 +219,8 @@ a[href^="tel:"] { min-height: 44px; }
   margin-inline: auto;
   padding-inline: var(--spacing-5);
   padding-block: var(--spacing-9);
+  /* The band's leading lives HERE, not on the band. See the .band rule above. */
+  line-height: var(--leading-body);
 }
 .band-inner--tight { padding-block: var(--spacing-5); }
 .band-inner--flush { padding-block: 0; }
@@ -342,6 +354,7 @@ a[href^="tel:"] { min-height: 44px; }
   max-width: var(--container-band);
   margin-inline: auto;
   padding-inline: var(--spacing-5);
+  line-height: var(--leading-body);   /* leading lives on the inner container, not the band */
   min-height: var(--header-h);
   display: flex;
   align-items: center;

@@ -39,6 +39,35 @@ putting padding back on the band will break every ADAPTED row on this site.
 
 Source: `docs/profile.md` §9, measured, not assumed.
 
+### 1b. The band's LEADING lives on the inner container too — same rule, same reason
+
+Found at Prompt 5 by measuring the shell, and it is the shell's entire structural residual.
+
+Every reference band wrapper computes `line-height: normal`; GoDaddy sets leading on the
+leaf text, never on the band. Ours inherited `24px` from `body`. `lineHeight` is a BLOCKING
+comparator field and a categorical mismatch scores a flat **100%** — **4.55pp of a 5%
+budget on every ADAPTED row, at every breakpoint, before geometry is looked at.**
+
+Measured, header and footer, before and after:
+
+| section | bp | before | after |
+|---|---|---|---|
+| site-header (vs ref s00) | 390 / 768 | 8.54 FAIL | 1.14 PASS |
+| site-header (vs ref s00) | 1440 | 8.73 FAIL | 2.14 PASS |
+| site-footer (vs ref s0X-aa99edc2) | 390 | 6.03 FAIL | 1.48 PASS |
+| site-footer | 768 | 4.58 PASS | 0.03 PASS |
+| site-footer | 1440 | 4.89 PASS | 0.35 PASS |
+
+The fix is three lines in `app/globals.css`: `.band { line-height: normal }`, with
+`.band-inner` and `.header-inner` carrying `var(--leading-body)`. **No painted text changed
+metrics** — the leading moved to where the reference carries it, one level in. Every band
+wrapper on this site is `.band`, and every text node lives inside `.band-inner` or
+`.header-inner`, so there is no gap. Verified: `lineHeight` now scores 0% on all 27
+structural rows, and `contrast.mjs` / `rendertruth.mjs` re-ran green afterwards.
+
+**Do not put leading back on a band.** It is the padding trap above with a different
+property, and it costs the same twenty rows.
+
 ---
 
 ## 2. Colour is excluded from every measurement, permanently (A-8)
@@ -164,13 +193,130 @@ nesting.**
 
 ---
 
-## 8. Palette seeds
+## 8. Palette seeds — RECORDED, Prompt 5 (A-7)
 
-*To be written at Prompt 5 (A-7): the winning seed, all five candidate seeds, the selected
-accent scheme, and the resulting primary hue — which must land in this site's assigned window
-of **5–25 (red / orange)**. Report how many seeds were tried. Note the auto-selector is
-structurally biased toward magenta accents at fixed OKLCH L/C, so seeds landing near hue
-300–360 are common and must be re-rolled.*
+Reproduce any row below exactly, from the SITE ROOT:
+
+```bash
+node ../_shared/harness/src/palette.mjs                # regenerate all five, re-select
+node ../_shared/harness/src/palette.mjs --seed 711279  # the winner, alone
+node ../_shared/harness/src/palette.mjs --seed 711279 --emit   # the @theme block
+```
+
+`scripts/palette.mjs` does NOT exist on this site and must not be recreated. A-12 supersedes
+it: the instrument is shared and site data reaches it through `harness.config.mjs`
+(`referenceRamp`, `semantic`, `pairsInUse`, `masterSeed`, `gradientSamples`). The command
+above is the A-7 requirement satisfied at the shared path.
+
+### The five candidates
+
+Master seed **3115**, 5 rolls, **0 rejected**, 5 survivors. Auto-selected on highest CTA
+contrast against its own fill; ties break to the lowest seed (OVERRIDE 1).
+
+| seed | scheme | primary hue | accent hue | neutral C | CTA contrast | CTA chroma | |
+|---|---|---|---|---|---|---|---|
+| 912614 | split-complementary | 308 | 158 | 0.051 | 6.41 | 0.1086 | |
+| **711279** | **analogous (+30deg)** | **6** | **36** | **0.032** | **7.33** | **0.1502** | **WINNER** |
+| 82332 | triadic | 297 | 177 | 0.052 | 6.52 | 0.0846 | |
+| 930803 | triadic | 322 | 82 | 0.044 | 6.84 | 0.0961 | |
+| 980541 | analogous | 147 | 117 | 0.038 | 6.66 | 0.1085 | |
+
+**WINNING SEED: 711279.** Primary hue **6**, inside this site's assigned window of **5-25
+(red / orange)**. Accent hue 36, analogous +30deg. Neutral tint chroma 0.032, inside the
+required 3-6% band.
+
+### How many seeds were tried
+
+The selection rule was never touched — only the **master seed** was steered, which is what
+`harness.config.mjs` instructs. `masterSeed: 3115` is the **105th** master seed in
+`1..3115` whose winner lands in the 5-25 window (verified by sweeping all 3115). Three of
+the five candidates it produced land at hue 297-322, which is the documented structural bias
+of the auto-selector toward magenta at fixed OKLCH L/C; the winner is not one of them
+because the rule ranks on CTA contrast, and hue 6 at L 0.471 beats them all at 7.33:1.
+
+### The emitted ramp EXACTLY matches `app/globals.css`
+
+Verified token by token before this section was written — 15 of 15 hexes identical,
+**0 mismatches**:
+
+| token | hex | | token | hex |
+|---|---|---|---|---|
+| `--color-primary` | `#3f1d25` | | `--color-neutral-900` | `#221014` |
+| `--color-primary-deep` | `#280b13` | | `--color-border` | `#e2c6cb` |
+| `--color-accent` | `#9d300f` | | `--color-border-strong` | `#685155` |
+| `--color-accent-deep` | `#812102` | | `--color-focus` | `#5d1703` |
+| `--color-surface` | `#ffffff` | | `--color-error` | `#c02b0a` |
+| `--color-neutral-200` | `#ffeef1` | | `--color-success` | `#1a7f37` |
+| `--color-neutral-400` | `#e2c6cb` | | `--color-warning` | `#b45309` |
+| `--color-neutral-600` | `#685155` | | | |
+
+### Primary vs accent chroma ordering — MEASURED, not assumed
+
+Two sibling sites disagreed here in instructive ways: one shipped a primary MORE saturated
+than its accent, which fails `cta-primacy` for any primary-filled button on every route;
+another found the ordering INVERTED between colour spaces. So both metrics are measured and
+both are recorded.
+
+| token | hex | OKLCH C | HSV S | sRGB hue |
+|---|---|---|---|---|
+| `accent` (THE call CTA) | `#9d300f` | **0.1502** | **0.9045** | 36.0 |
+| `accentDeep` (CTA hover) | `#812102` | 0.1357 | 0.9845 | 36.0 |
+| `focus` | `#5d1703` | 0.1054 | 0.9677 | 36.0 |
+| `primary` | `#3f1d25` | 0.0537 | 0.5397 | 6.1 |
+| `primaryDeep` | `#280b13` | 0.0495 | 0.7250 | 5.4 |
+| `neutral400` | `#e2c6cb` | 0.0323 | 0.1239 | 5.6 |
+| `neutral600` | `#685155` | 0.0313 | 0.2212 | 6.7 |
+
+**The two metrics agree, and the accent leads on both.** Accent is 2.80x the primary in
+OKLCH chroma (0.1502 / 0.0537) and 1.68x in HSV saturation (0.9045 / 0.5397). Neither
+sibling failure mode is present. Note `accentDeep` and `focus` post HIGHER HSV S than the
+accent while posting LOWER OKLCH C — HSV saturation rises as a colour darkens toward the
+gamut corner, which is precisely why the gate ranks on OKLCH chroma. Both are excluded from
+the `cta-primacy` comparison anyway: `focus` is a ring, and `accentDeep` only exists in the
+CTA's own hover state.
+
+The build reinforces this by construction rather than relying on the ordering alone: there
+is **exactly one filled chromatic action on the site**, the call CTA (header button and
+mobile call bar are the same action in two positions, painted from the same token). Every
+other action is achromatic. Nothing else can out-saturate the CTA because nothing else is
+saturated at all.
+
+### AA gate — all 24 declared pairs in use PASS
+
+Gated on pairs the shell ACTUALLY renders, not on the ramp in theory. The site-header band
+is a real two-stop gradient carrying real text, so it is gated on the WORST of 5
+OKLCH-interpolated samples, not on its endpoints.
+
+| pair | fg | bg | ratio | min | |
+|---|---|---|---|---|---|
+| body-text-on-surface | `#221014` | `#ffffff` | 18.23 | 4.5 | PASS |
+| body-text-on-ground | `#221014` | `#ffeef1` | 16.27 | 4.5 | PASS |
+| muted-on-surface | `#685155` | `#ffffff` | 7.25 | 4.5 | PASS |
+| muted-on-ground | `#685155` | `#ffeef1` | 6.47 | 4.5 | PASS |
+| link-on-surface | `#3f1d25` | `#ffffff` | 14.85 | 4.5 | PASS |
+| link-on-ground | `#3f1d25` | `#ffeef1` | 13.26 | 4.5 | PASS |
+| header-nav-on-gradient | `#ffffff` | gradient, worst stop | 14.85 | 4.5 | PASS |
+| header-muted-on-gradient | `#e2c6cb` | gradient, worst stop | 9.32 | 4.5 | PASS |
+| **call-cta-label** | `#ffffff` | `#9d300f` | **7.33** | 4.5 | PASS |
+| call-cta-label-hover | `#ffffff` | `#812102` | 9.76 | 4.5 | PASS |
+| callbar-label | `#ffffff` | `#9d300f` | 7.33 | 4.5 | PASS |
+| footer-text | `#ffffff` | `#221014` | 18.23 | 4.5 | PASS |
+| footer-muted | `#e2c6cb` | `#221014` | 11.43 | 4.5 | PASS |
+| footer-outline-edge | `#ffffff` | `#221014` | 18.23 | 3 | PASS |
+| input-border-on-surface | `#685155` | `#ffffff` | 7.25 | 3 | PASS |
+| input-border-on-ground | `#685155` | `#ffeef1` | 6.47 | 3 | PASS |
+| outline-btn-edge | `#3f1d25` | `#ffffff` | 14.85 | 3 | PASS |
+| focus-ring-on-surface | `#5d1703` | `#ffffff` | 13.21 | 3 | PASS |
+| focus-ring-on-ground | `#5d1703` | `#ffeef1` | 11.80 | 3 | PASS |
+| focus-halo-on-cta | `#ffffff` | `#9d300f` | 7.33 | 3 | PASS |
+| focus-halo-on-header | `#ffffff` | gradient, worst stop | 14.85 | 3 | PASS |
+| focus-halo-on-footer | `#ffffff` | `#221014` | 18.23 | 3 | PASS |
+| form-error-on-surface | `#c02b0a` | `#ffffff` | 5.85 | 4.5 | PASS |
+| form-success-on-surface | `#1a7f37` | `#ffffff` | 5.08 | 4.5 | PASS |
+
+Semantic colours (`error`, `success`, `warning`) are EXEMPT from the hue rotation and hold
+conventional hues; the generator asserts the hue arc, not merely the contrast, so a randomly
+green error state cannot ship.
 
 ---
 

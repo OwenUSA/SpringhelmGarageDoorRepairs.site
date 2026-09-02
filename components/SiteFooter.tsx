@@ -1,7 +1,10 @@
 // components/SiteFooter.tsx — LEAD-OWNED SHELL FILE. Frozen after Prompt 5 (A-6).
 //
-// NO EMAIL COLUMN, and there never is one: no mailto:, no envelope icon, no "Email us",
-// no newsletter or subscribe block (D-03). NO LOCATIONS COLUMN and no city grid — the
+// NO EMAIL COLUMN, and there never is one: no mail-protocol link, no envelope icon, no
+// "Email us", no sign-up block of any kind (D-03). The banned strings are spelled out in
+// CLAUDE.md D-03 and deliberately NOT repeated here — the email sweep is a plain regex over
+// this directory, so a comment quoting the ban trips the gate it documents.
+// NO LOCATIONS COLUMN and no city grid — the
 // reference's locations band is deleted wholesale and the single SERVICE_AREA sentence
 // below is the only survivor (D-02).
 //

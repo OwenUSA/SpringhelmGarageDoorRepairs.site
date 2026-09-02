@@ -1,68 +1,80 @@
-# RESUME — Springhelm Prompt 5+9, STOPPED DELIBERATELY mid-flight
+# RESUME — Springhelm. Prompt 5+9 is COMPLETE. Next turn is the Prompt 6+7 build wave.
 
-**Cause:** the operator stopped this agent ahead of the account rate limit. Not a crash.
-`npx tsc --noEmit` is **CLEAN**. Nothing was rolled back.
+`pnpm build` clean, `npx tsc --noEmit` clean, email sweep clean, all three gates green.
+Nothing is in flight and nothing is half-applied.
 
-## Where it stopped
-Its last words were: *"Two real defects, both latent in the shell — exactly the class the
-brief warned about. Fixing the causes."* **Those fixes are NOT confirmed landed.** Re-run
-both gates and re-derive rather than assuming either is in; do not spend an attempt on
-something already fixed, and do not assume one landed that did not.
+## What Prompt 5+9 landed
 
-## Landed
 ```
-components/  BusinessMap.tsx  MobileCallBar.tsx  Reveal.tsx  SiteFooter.tsx  SiteHeader.tsx
-lib/         business.ts
-app/         not-found.tsx  robots.ts  sitemap.ts   (all three NEW — four sibling sites
-             reached their final sweep and found these missing)
-modified     all five route pages, globals.css, layout.tsx, harness.config.mjs
+tokens + palette   app/globals.css   — 61 custom properties, palette seed 711279 applied
+shell components   SiteHeader  SiteFooter  MobileCallBar  BusinessMap  Reveal
+lib/business.ts    NAP, tel: href, JSON-LD (LocalBusiness only)
+app/               layout.tsx  not-found.tsx  robots.ts  sitemap.ts  + five route stubs
 ```
-Applied palette is in `app/globals.css`: `--color-primary: #3f1d25`, `--color-accent:
-#9d300f` — inside the assigned 5-25 red/orange window.
 
-## ⚠ NOT YET DONE — the seed is not recorded
-`docs/known-divergence.md` still has only the placeholder headings for the palette seeds.
-**The winning seed and all five candidate seeds must be written there**, and the emitted
-ramp confirmed against `app/globals.css` before doing so. A sibling shipped its shell with
-an unrecorded seed and had to recover it afterwards: a palette nobody can regenerate is one
-nobody can audit.
+**The shell is FROZEN from here (A-6).** No section agent touches `globals.css`,
+`layout.tsx`, tokens, header, footer, nav, the NAP block or `<BusinessMap>`. An agent that
+needs a shared change stops and hands it back to the lead.
 
-Also still owed: the AA table for pairs in use, the token-set summary, the shell divergence
-table, and **the measured sRGB chroma ordering of primary vs accent** — measure it, do not
-assume. A sibling found its primary MORE saturated than its accent, which fails
-`cta-primacy` for any primary-filled button on every route; another found the ordering
-inverts between OKLCH and HSV, so "looks more colourful" is not the test.
+## Palette — recorded, reproducible
+
+Winning seed **711279** (primary hue 6, in the assigned 5-25 window; accent hue 36,
+analogous +30deg). Candidates 912614, 711279, 82332, 930803, 980541 from master seed 3115,
+0 rejected. Emitted ramp verified against `app/globals.css`, 15/15 hexes, 0 mismatches.
+Full record, AA table and the measured primary-vs-accent chroma ordering:
+`docs/known-divergence.md` §8.
+
+```bash
+node ../_shared/harness/src/palette.mjs --seed 711279 --emit   # from the SITE ROOT
+```
+
+## Two build instructions the wave must not break
+
+Both are in `docs/known-divergence.md` §1 and §1b. They are the same trap in two properties.
+
+1. **Padding goes on `.band-inner`, never on `.band`.** The reference band wrapper is
+   genuinely `padding: 0`.
+2. **Leading goes on `.band-inner` / `.header-inner`, never on `.band`.** The reference band
+   wrapper computes `line-height: normal`. This was the shell's entire structural residual
+   at Prompt 5 — 4.55pp of a 5% budget on every ADAPTED row — and closing it took the
+   header from 8.54 to 1.14 and the footer from 6.03 to 1.48.
+
+## Where the numbers stand
+
+`docs/divergence.md`: 80 rows, **15 FAIL, 30 PASS, 0 BLOCKED**.
+
+**All 15 failures are the `(page) | PAGE | height delta %` row**, five routes x three
+breakpoints, 61-88%. That is the stub state, not a defect: four routes render header +
+footer only and `/` and `/contact` add a map. They close as the wave builds the bands.
+Every structural section row PASSES — worst is 2.14 against a 5% threshold. The 50 UNPAIRED
+rows are reference bands with no counterpart built yet; the harness explicitly documents
+this signature (`diff.mjs`, `staleCaptureWarning`) so it is not mistaken for a stale
+capture.
+
+## Running the gates next turn
+
+```bash
+node ../_shared/harness/src/serve-reference.mjs          # 3210, own command, prints
+                                                         # "Roofing Solutions NC LLC"
+pnpm dev                                                 # 3110, EXACTLY ONE pid
+MSYS_NO_PATHCONV=1 node ../_shared/harness/src/contrast.mjs
+MSYS_NO_PATHCONV=1 node ../_shared/harness/src/rendertruth.mjs
+MSYS_NO_PATHCONV=1 node ../_shared/harness/src/capture.mjs --side ours --all
+MSYS_NO_PATHCONV=1 node ../_shared/harness/src/diff.mjs   # LAST, unfiltered
+```
+
+`diff.mjs` reads captures from disk and never takes them — **re-capture `ours` after every
+build or the sweep measures the previous state.** Never background the dev server in the
+same command chain as a gate run: the chain drops back to the previous cwd and
+`loadConfig()` reads another site's config.
+
+## The email sweep quotes nothing
+
+`components/SiteFooter.tsx` documented D-03 by listing the banned strings, and the sweep is
+a plain regex over `app components lib content` — so the comment tripped the gate it
+documented. The comment now points at CLAUDE.md D-03 instead of quoting it. **Do not
+reintroduce the literal banned tokens into a comment.**
 
 ## Not started
-The build wave. All five routes are still shell-only stubs.
 
-## Carry forward — this site's own findings
-- **The padding inversion is the highest-leverage thing here.** The reference band wrapper
-  is genuinely `padding: 0`; the rhythm and the 1160px clamp live on the inner
-  `[data-ux="Container"]`. You wrote this yourself as a build instruction: an agent who
-  remembers the Atlas A-11 correction and "fixes" it by putting padding back on the band
-  **breaks all 20 ADAPTED rows.**
-- **Reveal.tsx must be a literal pass-through** per `docs/behavior/08`. A sibling shipped an
-  `opacity: 0` IntersectionObserver against its own spec and measured 165 text boxes as
-  no-visible-text.
-- **A green shell does not mean green sections.** A sibling's shell passed both gates, then
-  its wave found five latent defects — two utility classes that were not tokens at all, so
-  every dark band painted at 1.46:1 on all five routes. Put representative text on a dark
-  band and a gradient band BEFORE gating, and verify every class name resolves to a token
-  that exists.
-- You reached **zero length exemptions** at Prompt 3, the only site in the fleet to do so.
-  Do not introduce one.
-
-## Two port hazards specific to this repo, both already hit
-- A completed Prompt-1 agent woke on a background event, restarted a dev server here and
-  collided with this turn over `.next/` — presenting as `Cannot find module
-  .next/server/middleware-manifest.json`, which looks like a broken app rather than a
-  collision. **Two turns must never run in this directory at once.**
-- That left **two listeners on 3110**. Before believing any gate:
-  ```bash
-  netstat -ano | grep -E ":3110\s+.*LISTENING"   # EXACTLY ONE pid
-  ```
-  and confirm `.next/BUILD_ID` is OLDER than the gate artifacts, not newer.
-- The reference server on 3210 is currently FREE and must be restarted from the site root:
-  `node ../_shared/harness/src/serve-reference.mjs` — confirm it prints
-  `Roofing Solutions NC LLC` before trusting a capture.
+The Prompt 6+7 build wave. All five routes are shell-only. Then Prompt 10+11.
