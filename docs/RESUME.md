@@ -65,3 +65,26 @@ Prompt 10+11: `docs/asset-prompts.md` (OVERRIDE 2, text only, Nano Banana Pro id
 the applied hues — primary `#3f1d25` hue 6, accent `#9d300f` hue 36) and the trimmed
 acceptance sweep (A-4: no Lighthouse, no manual keyboard pass; every other gate stands).
 Slot dimensions per breakpoint are already in `assets/INVENTORY.md`.
+
+---
+
+## UPDATE — Prompt 10+11 COMPLETE. Chain is FINISHED.
+
+`docs/asset-prompts.md` written (16 REPLACE slots + logo, text-only, Nano Banana Pro
+idiom, applied hues named from `app/globals.css`). Trimmed acceptance sweep run in full:
+`pnpm build` clean, `tsc --noEmit` clean, email/locations sweeps clean, NAP/hours/maps
+verified, internal link crawl + custom 404 clean, `contrast.mjs` 821 scored/0 FAIL/33
+UNMEASURABLE, `rendertruth.mjs` 0 findings, structural sweep 81 rows/12 FAIL (all 12 the
+documented `(page)` height floor)/67 PASS/0 BLOCKED, similarity gate 34/34 + 20/20.
+
+One real issue found and fixed: the dev server that had been left running since Prompt 6+7
+was serving a broken/empty CSS bundle (0 stylesheet rules — a stale Next dev process, not
+a code defect). It produced 123 false tap-target findings. Killed the stale process,
+started a fresh `pnpm dev`, verified `<title>` and a live computed style before re-running
+every gate. No component or CSS file needed a code change.
+
+`docs/PRE-LAUNCH.md` written: CONSTANTS facts, the 11 open `TODO(fact)`s, the 16
+undelivered image assets, and the two A-4-dropped gates (Lighthouse, manual keyboard pass)
+worded as blockers, plus the STUB contact form and no-deployment-configured notes.
+
+Nothing left in this chain. This is the final turn.
