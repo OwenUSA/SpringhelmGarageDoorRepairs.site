@@ -7,5 +7,5 @@ const meta = copy.routes['/about'].meta;
 export const metadata: Metadata = { title: meta.title, description: meta.description };
 
 export default function Page() {
-  return <main data-route="/about">{/* about */}</main>;
+  return <main id="main" data-route="/about">{/* about */}</main>;
 }

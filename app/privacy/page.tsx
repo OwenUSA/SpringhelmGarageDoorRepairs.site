@@ -7,5 +7,5 @@ const meta = copy.routes['/privacy'].meta;
 export const metadata: Metadata = { title: meta.title, description: meta.description };
 
 export default function Page() {
-  return <main data-route="/privacy">{/* privacy */}</main>;
+  return <main id="main" data-route="/privacy">{/* privacy */}</main>;
 }

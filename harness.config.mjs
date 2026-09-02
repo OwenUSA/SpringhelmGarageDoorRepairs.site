@@ -85,8 +85,102 @@ export default {
   // element. Report how many seeds you tried. Note the auto-selector is structurally biased
   // toward magenta accents -- at fixed OKLCH L/C the lowest luminance sits near hue 300-360
   // -- so seeds landing there are common and must be re-rolled unless that IS your window.
-  masterSeed: 3110,
+  masterSeed: 3115,   // steered at Prompt 5 — see the WINNING SEED note at the tail of this file
   gradientSamples: 5,
+
+  // ---- referenceRamp: EXTRACTED, Prompt 5 ---------------------------------------------
+  // Sampled from computed styles on the LOCAL reference server (127.0.0.1:3210, served
+  // <title> verified "Roofing Solutions NC LLC") across all five saved pages at 1440.
+  // Raw tallies: `.harness/extract.mjs`, reproduced in docs/profile.md §12.
+  //
+  //   band ground     rgb(22,22,22)   #161616   38 painted backgrounds  (the dark theme)
+  //   deeper band     rgb(0,0,0)      #000000   15
+  //   surface         #ffffff                    7 (the one white band, on /about)
+  //   body text       rgb(247,247,247)#f7f7f7  102 leaf text paints (light-on-dark)
+  //   muted text      rgb(164,164,164)#a4a4a4   64
+  //   hairline        rgb(226,226,226)#e2e2e2   56
+  //   accent / CTA    rgb(100,149,237)#6495ed   13 fills + 16 link paints  (cornflower blue)
+  //   accent hover    rgb(71,136,234) #4788ea    2
+  //
+  // TWO deliberate departures, both ACCESSIBILITY fixes rather than sampling errors, and
+  // both recorded in docs/known-divergence.md §10:
+  //
+  // 1. THE REFERENCE IS A DARK THEME AND OURS IS NOT INVERTED TO MATCH IT. Their ramp runs
+  //    light text on near-black. The generator's gate requires neutral0..neutral900 to be
+  //    monotonically DECREASING in L, so the ramp is expressed in the conventional
+  //    light-to-dark order and our dark bands are painted with neutral900 / primary rather
+  //    than by inverting the ramp. Their #161616 survives EXACTLY as neutral900 (L 0.200).
+  //    Colour divergence is excluded from every measurement anyway (A-8), so this is free.
+  //
+  // 2. THE REFERENCE CTA FILL FAILS AA AND CANNOT BE CARRIED THROUGH THE ROTATION.
+  //    #6495ed is OKLCH L 0.686; its own white label sits at 2.36:1 on their live site, so
+  //    holding that L exactly would carry the failure through every hue on the circle and no
+  //    seed could rescue it. Our accent holds the reference CTA's ROLE and its chroma CLASS
+  //    (C 0.150 against their 0.130) at L 0.471, which keeps a white label at >= 4.5:1 for
+  //    every hue. accentDeep holds the #4788ea hover role at L 0.401.
+  //
+  // Every hex below supplies only the L and C the generator holds; H is discarded and
+  // re-derived from the winning primary hue.
+  referenceRamp: {
+    primary:     '#401d1d',   // L 0.281  C 0.055  structural dark, their #161616 band, tinted
+    primaryDeep: '#290b0c',   // L 0.201  C 0.050  gradient start, their #000000 band
+    accent:      '#9e2b36',   // L 0.471  C 0.150  CTA fill  (role of #6495ed, AA-corrected)
+    accentDeep:  '#831826',   // L 0.401  C 0.141  CTA hover (role of #4788ea)
+    neutral0:    '#ffffff',   // L 1.000  C 0      surface
+    neutral200:  '#f3f3f3',   // L 0.964  C 0      page ground
+    neutral400:  '#cecece',   // L 0.851  C 0      hairline / on-dark muted, their #e2e2e2 role
+    neutral600:  '#585858',   // L 0.460  C 0      muted text, their #a4a4a4 role
+    neutral900:  '#161616',   // L 0.200  C 0      body text and dark bands — their band EXACTLY
+  },
+
+  // EXEMPT from hue rotation (A-7). Conventional hues held: error red, success green,
+  // warning amber. A randomly green error state is a bug.
+  semantic: {
+    error:   '#c02b0a',
+    success: '#1a7f37',
+    warning: '#b45309',
+  },
+
+  // WHAT THE SHELL ACTUALLY RENDERS. Every entry corresponds to a real painted pair in
+  // app/globals.css plus the shell components; nothing here is aspirational ramp theory.
+  //
+  // The site-header band is a REAL two-stop gradient (primaryDeep -> primary) carrying the
+  // wordmark, the nav links and the header CTA, so it is declared as ONE gradient entry and
+  // gated on the WORST of 5 OKLCH-interpolated samples. Declaring it as two flat rows would
+  // gate the endpoints and never look at the middle of the ramp.
+  //
+  // CHROMATIC-ACTION RULE, stated once and enforced by construction: there is EXACTLY ONE
+  // filled chromatic action on this site, the call CTA (the header button and the mobile
+  // call bar are the same action in two positions, painted with the same token). Every other
+  // action — nav links, footer links, the footer call button, the map bypass and directions
+  // links, the skip link — is achromatic. Nothing else can out-saturate the CTA because
+  // nothing else is saturated at all.
+  pairsInUse: [
+    { name: 'body-text-on-surface',     fg: 'neutral900',   bg: 'neutral0',   min: 4.5 },
+    { name: 'body-text-on-ground',      fg: 'neutral900',   bg: 'neutral200', min: 4.5 },
+    { name: 'muted-on-surface',         fg: 'neutral600',   bg: 'neutral0',   min: 4.5 },
+    { name: 'muted-on-ground',          fg: 'neutral600',   bg: 'neutral200', min: 4.5 },
+    { name: 'link-on-surface',          fg: 'primary',      bg: 'neutral0',   min: 4.5 },
+    { name: 'link-on-ground',           fg: 'primary',      bg: 'neutral200', min: 4.5 },
+    { name: 'header-nav-on-gradient',   fg: 'neutral0',     bg: { gradient: ['primaryDeep', 'primary'] }, min: 4.5 },
+    { name: 'header-muted-on-gradient', fg: 'neutral400',   bg: { gradient: ['primaryDeep', 'primary'] }, min: 4.5 },
+    { name: 'call-cta-label',           fg: 'neutral0',     bg: 'accent',     min: 4.5, kind: 'cta' },
+    { name: 'call-cta-label-hover',     fg: 'neutral0',     bg: 'accentDeep', min: 4.5 },
+    { name: 'callbar-label',            fg: 'neutral0',     bg: 'accent',     min: 4.5 },
+    { name: 'footer-text',              fg: 'neutral0',     bg: 'neutral900', min: 4.5 },
+    { name: 'footer-muted',             fg: 'neutral400',   bg: 'neutral900', min: 4.5 },
+    { name: 'footer-outline-edge',      fg: 'neutral0',     bg: 'neutral900', min: 3 },
+    { name: 'input-border-on-surface',  fg: 'borderStrong', bg: 'neutral0',   min: 3 },
+    { name: 'input-border-on-ground',   fg: 'borderStrong', bg: 'neutral200', min: 3 },
+    { name: 'outline-btn-edge',         fg: 'primary',      bg: 'neutral0',   min: 3 },
+    { name: 'focus-ring-on-surface',    fg: 'focus',        bg: 'neutral0',   min: 3, kind: 'focus' },
+    { name: 'focus-ring-on-ground',     fg: 'focus',        bg: 'neutral200', min: 3, kind: 'focus' },
+    { name: 'focus-halo-on-cta',        fg: 'neutral0',     bg: 'accent',     min: 3, kind: 'focus' },
+    { name: 'focus-halo-on-header',     fg: 'neutral0',     bg: { gradient: ['primaryDeep', 'primary'] }, min: 3, kind: 'focus' },
+    { name: 'focus-halo-on-footer',     fg: 'neutral0',     bg: 'neutral900', min: 3, kind: 'focus' },
+    { name: 'form-error-on-surface',    fg: 'error',        bg: 'neutral0',   min: 4.5 },
+    { name: 'form-success-on-surface',  fg: 'success',      bg: 'neutral0',   min: 4.5 },
+  ],
 
   // ---- assets (Prompt 2) -------------------------------------------------------------
   // PROVENANCE, D-09: every photographic and brand asset on the reference belongs to the

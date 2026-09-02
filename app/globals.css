@@ -1,17 +1,560 @@
 @import "tailwindcss";
 
-/* Tokens land here in Prompt 5 (@theme, CSS-first). Intentionally empty for now. */
-@theme {
+/* =======================================================================================
+   PROMPT 5 + 9 — TOKENS AND THE SHARED SHELL. Frozen after this turn (A-6).
+   =======================================================================================
+
+   THE ONE RULE THAT GOVERNS EVERY BAND ON THIS SITE
+   -------------------------------------------------
+   The reference's band wrapper is genuinely `padding: 0` on all four sides, at every
+   breakpoint, on all five routes (docs/profile.md §9, measured). The vertical rhythm AND
+   the 1160px clamp both live on an inner `[data-ux="Container"]`.
+
+       <section class="band">        padding: 0        <-- ALWAYS ZERO
+         <div class="band-inner">    padding-block     <-- the rhythm lives here
+                                     max-width: 1160px <-- and so does the clamp
+
+   This is the INVERSE of the Atlas A-11 defect, and the inversion is the trap. An agent who
+   remembers "the reference varies padding per band, put it back on the band" and applies
+   that here manufactures a paddingTop/paddingBottom delta against a reference band that
+   measures 0 — on all 20 ADAPTED rows, at all three breakpoints, with one fix attempt each.
+   docs/known-divergence.md §1.
+
+   WHY @theme static AND WHY LITERALS ONLY
+   ---------------------------------------
+   `static` emits every variable whether or not a utility consumes it, so a token declared
+   here always exists at runtime. LITERALS because a `var()` alias normalises to the string
+   "var(--x)" in diff.mjs's token loader and then matches no computed value — a sibling
+   chased nine "token violations" that were pure instrument artefacts.
+
+   Colours are emitted as HEX, not oklch(), for the same reason: diff.mjs expands a hex
+   token to the exact `rgb(r, g, b)` string getComputedStyle returns, which is an
+   exact-match path. The OKLCH triplet each hex was derived from is in the comment beside
+   it, so the derivation stays auditable.
+
+   PALETTE — seed 711279, master seed 3115, analogous (+30deg), primary hue 6, neutral tint
+   0.032. All five candidate seeds and the search record: docs/known-divergence.md §8.
+   ======================================================================================= */
+
+@theme static {
+  /* ---- colour ramp: OKLCH-rotated from the reference ramp, L and C held exactly ------
+     primary hue 6 (assigned window 5-25, red/orange), accent hue 36 (analogous +30). */
+  --color-primary:       #3f1d25;  /* oklch(28.14% 0.0537   6.14)  structural dark band  */
+  --color-primary-deep:  #280b13;  /* oklch(20.10% 0.0495   5.43)  gradient start        */
+  --color-accent:        #9d300f;  /* oklch(47.00% 0.1502  35.99)  THE call CTA fill     */
+  --color-accent-deep:   #812102;  /* oklch(40.14% 0.1357  35.96)  CTA hover             */
+  --color-surface:       #ffffff;  /* oklch(100.00% 0.0000 89.88)  card / panel ground   */
+  --color-neutral-200:   #ffeef1;  /* oklch(96.34% 0.0188   5.29)  page ground, tinted   */
+  --color-neutral-400:   #e2c6cb;  /* oklch(85.15% 0.0323   5.62)  hairline / on-dark muted */
+  --color-neutral-600:   #685155;  /* oklch(46.00% 0.0313   6.70)  muted text            */
+  --color-neutral-900:   #221014;  /* oklch(20.06% 0.0309   5.88)  body text, dark bands */
+  --color-border:        #e2c6cb;  /* decorative dividers only — NOT gated at 3:1        */
+  --color-border-strong: #685155;  /* input and control edges — gated at 3:1             */
+  --color-focus:         #5d1703;  /* oklch(32.06% 0.1054  35.97)  focus ring, 2-layer   */
+  /* semantic — EXEMPT from the hue rotation (A-7), conventional hues held */
+  --color-error:         #c02b0a;  /* red   — 5.85:1 on surface */
+  --color-success:       #1a7f37;  /* green — 5.08:1 on surface */
+  --color-warning:       #b45309;  /* amber */
+
+  /* ---- type scale: the reference uses SIX sizes and TWO weights. Nothing invented.
+     Tallies at 1440 across all five saved pages: 16px x218, 22px x93, 14px x28,
+     44px x6, 12px x4, 18px x3. 32px is the 390 value of the 44px display size. */
+  --text-xs:        0.75rem;    /* 12px */
+  --text-sm:        0.875rem;   /* 14px */
+  --text-base:      1rem;       /* 16px  — body, and the reference's h3 */
+  --text-lead:      1.125rem;   /* 18px */
+  --text-heading:   1.375rem;   /* 22px  — the reference's h2 everywhere */
+  --text-display-sm: 2rem;      /* 32px  — display at 390 */
+  --text-display:   2.75rem;    /* 44px  — display at 768 and 1440 */
+
+  --font-weight-normal: 400;
+  --font-weight-bold:   700;
+
+  /* ---- line heights, sampled as computed px against their own size ------------------
+     24/16 = 1.5 | 21/14 = 1.5 | 20/16 = 1.25 (h3) | 30.8/22 = 1.4 | 27.5/22 = 1.25
+     24.75/18 = 1.375 | 55/44 = 1.25 | 40/32 = 1.25 */
+  --leading-tight:   1.25;
+  --leading-snug:    1.375;
+  --leading-heading: 1.4;
+  --leading-body:    1.5;
+
+  /* ---- letter-spacing: the reference has exactly two non-normal values, both 0.063em
+     (1.008px on 16px, 0.882px on 14px). Used on buttons and eyebrows. */
+  --tracking-normal: 0em;
+  --tracking-wide:   0.063em;
+
+  /* ---- radii: the reference uses exactly three ------------------------------------- */
+  --radius-xs: 2px;
+  --radius-sm: 7px;
+  --radius-md: 12px;
+
+  /* ---- shadows: written in the COLOUR-FIRST order getComputedStyle returns, so a
+     token can match a computed value without a second normalisation pass. Geometry is
+     the reference's (0 2px 6px, 0 1px 3px, 0 1px 0); the colour is ours (A-8). */
+  --shadow-hairline: rgba(34, 16, 20, 0.14) 0px 1px 0px 0px;
+  --shadow-raised:   rgba(34, 16, 20, 0.2) 0px 2px 6px 0px;
+  --shadow-deep:     rgba(34, 16, 20, 0.3) 0px 2px 6px 0px;
+  --shadow-inset:    rgba(34, 16, 20, 0.18) 0px 1px 3px 0px;
+
+  /* ---- spacing: NINE named steps, from the reference's padding tally
+     (4 x21, 6 x142, 8 x56, 16 x100, 24 x36, 32 gap x10, 40 x44, 48 x13, 56 x7).
+     A section that needs a value not on this list uses the NEAREST step and records the
+     delta — it does not mint a tenth. */
+  --spacing-1: 4px;
+  --spacing-2: 6px;
+  --spacing-3: 8px;
+  --spacing-4: 16px;
+  --spacing-5: 24px;
+  --spacing-6: 32px;
+  --spacing-7: 40px;
+  --spacing-8: 48px;
+  --spacing-9: 56px;
+
+  /* ---- containers: content clamps to 1160px at 1440 and is full-bleed at 390.
+     1112px is the inner measure inside the 24px gutters. */
+  --container-band:  1160px;
+  --container-prose: 720px;
+
+  /* ---- breakpoints: BP_SET is 390 / 768 / 1440. The reference also carries min-1024
+     and min-1536 rules; both are RECORDED in docs/profile.md §3 and deliberately not
+     measured (cost rule). 768 is the reference's own primary restack. */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+/* =======================================================================================
+   Non-token custom properties. Deliberately OUTSIDE @theme: next/font generates its own
+   family name at build time, so a font stack here can only be a var() alias — and a
+   var() alias inside @theme is exactly the phantom-violation trap the header comment
+   describes. Nothing below is token-checked.
+   ======================================================================================= */
+:root {
+  --font-body:    var(--font-lato), Lato, Arial, Helvetica, sans-serif;
+  --font-display: var(--font-ubuntu), Ubuntu, Arial, Helvetica, sans-serif;
+
+  --header-h:   72px;
+  --call-bar-h: 56px;
+
+  --dur-drawer-in:  220ms;
+  --dur-drawer-out: 160ms;
+  --dur-header:     180ms;
+  --ease-in:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.4, 0, 1, 1);
+  --ease-std: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* =======================================================================================
+   Base
+   ======================================================================================= */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: var(--font-body);
+  /* Spec 02: the sticky header must never park focus underneath itself. */
+  scroll-padding-top: calc(var(--header-h) + 8px);
+  /* Spec 08 rule 5: smooth scrolling is NOT set. The drawer restores scroll synchronously
+     and a smooth-scrolled restore is visibly wrong. */
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-neutral-200);
+  color: var(--color-neutral-900);
+  font-size: var(--text-base);
+  line-height: var(--leading-body);
+  /* Spec 03: the call bar reserves its own space instead of covering the last band. */
+  padding-bottom: calc(var(--call-bar-h) + env(safe-area-inset-bottom, 0px));
+}
+@media (min-width: 768px) { body { padding-bottom: 0; } }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--font-weight-normal);
+  margin: 0;
+}
+p { margin: 0; }
+img, svg, iframe { display: block; max-width: 100%; }
+
+a { color: var(--color-primary); }
+
+/* Focus ring — TWO layers. A surface-coloured inner halo plus a dark outer ring is the
+   only single-token construction that holds 3:1 against BOTH a white page and a saturated
+   button fill. Gated as focus-ring-on-surface / on-ground / halo-on-cta / halo-on-header /
+   halo-on-footer in harness.config.mjs. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 2px var(--color-surface);
+  border-radius: var(--radius-xs);
 }
 
 /* A-14 — one rule, site-wide, instead of a per-component tap-target fix.
    Every tel: link is a primary conversion target; WCAG 2.5.8 wants 44px.
-   min-height is inert on a purely inline box, so tel links inside prose keep
-   their natural metrics and the measured type scale is untouched. */
-a[href^="tel:"] {
+   min-height is inert on a purely inline box, so tel links inside prose keep their
+   natural metrics and the measured type scale is untouched. */
+a[href^="tel:"] { min-height: 44px; }
+
+/* =======================================================================================
+   BANDS — read the header comment before touching either of these two rules.
+   ======================================================================================= */
+.band {
+  padding: 0;              /* ZERO. ALWAYS. The reference band wrapper measures 0. */
+  margin: 0;
+  /* Spec 02 failure mode: position:sticky dies silently if an ancestor sets overflow or a
+     transform. No band may set either. */
+}
+.band-inner {
+  max-width: var(--container-band);
+  margin-inline: auto;
+  padding-inline: var(--spacing-5);
+  padding-block: var(--spacing-9);
+}
+.band-inner--tight { padding-block: var(--spacing-5); }
+.band-inner--flush { padding-block: 0; }
+
+.band--surface { background-color: var(--color-surface); }
+.band--ground  { background-color: var(--color-neutral-200); }
+.band--dark    { background-color: var(--color-neutral-900); color: var(--color-surface); }
+.band--dark a  { color: var(--color-surface); }
+
+.eyebrow {
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  font-weight: var(--font-weight-bold);
+  color: var(--color-neutral-600);
+}
+.band--dark .eyebrow { color: var(--color-neutral-400); }
+
+.h-display {
+  font-size: var(--text-display-sm);
+  line-height: var(--leading-tight);
+}
+@media (min-width: 768px) { .h-display { font-size: var(--text-display); } }
+.h-section { font-size: var(--text-heading); line-height: var(--leading-heading); }
+.h-card    { font-size: var(--text-base); line-height: var(--leading-tight); }
+.muted     { color: var(--color-neutral-600); }
+.band--dark .muted { color: var(--color-neutral-400); }
+
+/* =======================================================================================
+   ACTIONS — the chromatic-action rule
+   ---------------------------------------------------------------------------------------
+   There is EXACTLY ONE filled chromatic action on this site: the call CTA. The header
+   button and the mobile call bar are that same action in two positions, painted with the
+   same --color-accent token. Every other action on the site — nav links, footer links, the
+   footer call button, the map bypass, the directions links, the skip link — is ACHROMATIC.
+
+   This is not a style preference. rendertruth.mjs checks CTA salience as chroma dominance:
+   no other action on the page may be more saturated than the call CTA. Ranking by painted
+   contrast is unsatisfiable (near-black on white is ~18:1 and no brand colour beats it) and
+   ranking among "buttons" fails on a bordered 21:1 nav link. Chroma is the only proxy that
+   works, so the build guarantees it by giving nothing else any chroma at all.
+
+   Measured ordering, sRGB: accent HSV-S 0.905 / OKLCH C 0.1502 against primary 0.540 /
+   0.0537. The accent is 2.8x the primary in OKLCH chroma. The sibling failure — a primary
+   MORE saturated than its accent, which fails cta-primacy for any primary-filled button on
+   every route — cannot occur here, and there is no primary-filled button in any case.
+   ======================================================================================= */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
   min-height: 44px;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-wide);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background-color 150ms var(--ease-std), border-color 150ms var(--ease-std);
 }
 
+/* THE call CTA. The only filled chromatic control on the site. */
+.btn--call {
+  background-color: var(--color-accent);
+  color: var(--color-surface);
+  border-color: var(--color-accent);
+}
+.btn--call:hover { background-color: var(--color-accent-deep); border-color: var(--color-accent-deep); }
+
+/* Achromatic outline, for use on a dark band. */
+.btn--ghost-light {
+  background-color: transparent;
+  color: var(--color-surface);
+  border-color: var(--color-surface);
+}
+.btn--ghost-light:hover { background-color: rgba(255, 255, 255, 0.12); }
+
+/* Achromatic outline, for use on a light band. */
+.btn--ghost-dark {
+  background-color: transparent;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn--ghost-dark:hover { background-color: var(--color-neutral-200); }
+
+/* =======================================================================================
+   SKIP LINK
+   ======================================================================================= */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 60;
+}
+.skip-link:focus-visible {
+  left: var(--spacing-4);
+  top: var(--spacing-4);
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  border-radius: var(--radius-sm);
+}
+
+/* =======================================================================================
+   SITE HEADER — spec 02. Sticky is a DELIBERATE ADDITION; the reference's stickyEls is [].
+   The band background is a real two-stop gradient carrying real text, declared and gated as
+   one gradient pair in harness.config.mjs and sampled at 5 OKLCH points, worst-stop.
+   ======================================================================================= */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  padding: 0;                 /* band rule */
+  background-image: linear-gradient(180deg, #280b13 0%, #3f1d25 100%);
+  background-color: var(--color-primary-deep);
+  color: var(--color-surface);
+  /* Height ratio resting -> stuck is 1:1 (spec 02). Only background and shadow change. */
+  transition: box-shadow var(--dur-header) var(--ease-std),
+              background-color var(--dur-header) var(--ease-std);
+}
+.site-header[data-stuck] { box-shadow: var(--shadow-hairline); }
+
+.header-inner {
+  max-width: var(--container-band);
+  margin-inline: auto;
+  padding-inline: var(--spacing-5);
+  min-height: var(--header-h);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+}
+
+.wordmark {
+  /* WCAG 2.5.8: the two-line wordmark measured 124x43 at 390 and failed the tap-target
+     check by a single pixel, on all five routes. min-height plus centring fixes the
+     target without touching the type scale the structural diff measures. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 44px;
+  font-family: var(--font-display);
+  font-size: var(--text-heading);
+  line-height: var(--leading-tight);
+  color: var(--color-surface);
+  text-decoration: none;
+  margin-right: auto;
+}
+.wordmark span { display: block; font-family: var(--font-body); font-size: var(--text-xs); letter-spacing: var(--tracking-wide); color: var(--color-neutral-400); }
+
+.nav-desktop { display: none; }
+@media (min-width: 768px) {
+  .nav-desktop { display: flex; align-items: center; gap: var(--spacing-5); }
+  .nav-toggle  { display: none; }
+}
+.nav-desktop a {
+  color: var(--color-surface);
+  text-decoration: none;
+  font-size: var(--text-base);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-desktop a[aria-current="page"] { text-decoration: underline; text-underline-offset: 6px; }
+
+.nav-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  min-height: 44px;
+  min-width: 44px;
+  padding: var(--spacing-3);
+  background: transparent;
+  border: 1px solid var(--color-surface);
+  border-radius: var(--radius-sm);
+  color: var(--color-surface);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+  cursor: pointer;
+}
+
+/* ---- drawer, spec 01. Present in the DOM at all times, hidden with [hidden] + transform;
+   never conditionally rendered away. ---------------------------------------------------- */
+.drawer-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background-color: rgba(34, 16, 20, 0.55);
+  opacity: 0;
+  transition: opacity var(--dur-drawer-out) var(--ease-out);
+}
+.drawer-scrim[data-open] { opacity: 1; transition-duration: var(--dur-drawer-in); transition-timing-function: var(--ease-in); }
+
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  width: min(86vw, 380px);
+  padding: var(--spacing-5);
+  background-color: var(--color-neutral-900);
+  color: var(--color-surface);
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform var(--dur-drawer-out) var(--ease-out), opacity var(--dur-drawer-out) var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  overflow-y: auto;
+}
+.drawer[data-open] {
+  transform: translateX(0);
+  opacity: 1;
+  transition-duration: var(--dur-drawer-in);
+  transition-timing-function: var(--ease-in);
+}
+.drawer a {
+  color: var(--color-surface);
+  text-decoration: none;
+  font-size: var(--text-lead);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+/* =======================================================================================
+   MOBILE CALL BAR — spec 03. z-index 40, BELOW the drawer's 50, so the drawer covers it.
+   ======================================================================================= */
+.call-bar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 40;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background-color: var(--color-accent);
+}
+.call-bar a {
+  /* THE FILL IS ON THE ANCHOR, not only on the wrapper. rendertruth.mjs scores CTA
+     salience from an element's OWN painted fill. With the accent only on the wrapper div
+     the anchor read as a transparent, unbordered control at chroma 0; the header CTA is
+     display:none below 768; and the outlined "Get directions" link (chroma 0.133) then
+     out-saturated the call CTA on / and /contact at 390. Spec 03 also says the whole bar
+     IS the link, so the fill belongs here. The wrapper keeps its own fill so the
+     safe-area strip below the anchor stays painted. */
+  background-color: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-3);
+  min-height: var(--call-bar-h);
+  width: 100%;
+  color: var(--color-surface);
+  text-decoration: none;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--tracking-wide);
+}
+@media (min-width: 768px) { .call-bar { display: none; } }
+
+/* =======================================================================================
+   SITE FOOTER
+   ======================================================================================= */
+.site-footer {
+  padding: 0;                 /* band rule */
+  background-color: var(--color-neutral-900);
+  color: var(--color-surface);
+}
+.footer-grid {
+  display: grid;
+  gap: var(--spacing-6);
+  grid-template-columns: 1fr;
+}
+@media (min-width: 768px) { .footer-grid { grid-template-columns: repeat(3, 1fr); } }
+.site-footer a { color: var(--color-surface); }
+.site-footer h2 {
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  margin-bottom: var(--spacing-3);
+}
+.footer-links { list-style: none; margin: 0; padding: 0; }
+.footer-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.footer-directions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  min-height: 44px;
+  font-size: var(--text-sm);
+}
+.footer-legal {
+  border-top: 1px solid var(--color-neutral-600);
+  padding-block: var(--spacing-4);
+  font-size: var(--text-sm);
+  color: var(--color-neutral-400);
+}
+
+/* =======================================================================================
+   MAP — spec 07. The bypass link is the section's FIRST CHILD, is invisible at rest, and
+   becomes a >= 44x44 control on :focus-visible. Three sibling sites shipped the map as a
+   keyboard trap with this exact spec written down and never built.
+   ======================================================================================= */
+.map-bypass {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+.map-bypass:focus-visible {
+  position: static;
+  width: auto;
+  height: auto;
+  min-width: 44px;
+  min-height: 44px;
+  clip-path: none;
+  overflow: visible;
+  display: inline-flex;
+  align-items: center;
+  padding: var(--spacing-3) var(--spacing-4);
+  background-color: var(--color-surface);
+  color: var(--color-neutral-900);
+  border-radius: var(--radius-sm);
+}
+.map-frame {
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-neutral-200);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+@media (max-width: 767px) { .map-frame { aspect-ratio: 4 / 3; } }
+.map-frame > iframe { width: 100%; height: 100%; border: 0; display: block; }
+.map-meta { display: flex; flex-wrap: wrap; gap: var(--spacing-4); align-items: center; margin-top: var(--spacing-4); }
+
+/* =======================================================================================
+   REDUCED MOTION — D-19. Every animation on the site is dropped; every BEHAVIOUR survives.
+   The drawer still opens, still locks scroll, still traps focus; the header still sticks.
+   ======================================================================================= */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
