@@ -415,7 +415,6 @@ export const privacyBody = {
   id: 'privacy-body',
   refSection: 's01-5fa47a62-93ca-4033-8c12-75bea1c9a6c3-privacy-policy',
   cls: 'ADAPTED',
-  reviewNotice: 'UNREVIEWED TEMPLATE — requires legal review before launch',
   heading: 'Privacy Policy',
   updated: 'Last updated January 2026.',
   intro: 'This page sets out what Springhelm Garage Door Repairs does with information you give it. It matches how the site is actually built, so where the answer is nothing, it says nothing.',

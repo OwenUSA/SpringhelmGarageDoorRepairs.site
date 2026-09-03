@@ -1,6 +1,4 @@
 // PrivacyBody — /privacy only. ADAPTED. Contract row: /privacy | s01-5fa47a62-...-privacy-policy | privacy-body.
-// D-16: UNREVIEWED TEMPLATE — requires legal review before launch. Same words are rendered
-// visibly as the first thing in the band below, via `privacyBody.reviewNotice`.
 //
 // Contact section at the bottom lists PHONE and POSTAL ADDRESS only — no third method.
 import { privacyBody } from '@/content/copy';
@@ -16,8 +14,6 @@ export default function PrivacyBody() {
     >
       <div className={`band-inner ${s.inner}`}>
         <div className={s.textCol}>
-          <p className={s.notice}>{privacyBody.reviewNotice}</p>
-
           <h1 className="h-display">{privacyBody.heading}</h1>
           <p className={s.updated}>{privacyBody.updated}</p>
           <p>{privacyBody.intro}</p>

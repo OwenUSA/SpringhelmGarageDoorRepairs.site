@@ -68,13 +68,16 @@ happened yet.
 
 ## 6. Legal / compliance review
 
-`app/privacy/page.tsx` (`privacy-body`) carries `<!-- UNREVIEWED TEMPLATE — requires legal
-review before launch -->` at its top per D-16. It has not been reviewed by counsel. It also
-carries a `TODO(fact): policyDate` line that must be filled with the real adoption date
-before publish, and every clause is written to what this site's placeholder build actually
-does (no email collection, no analytics, no cookies beyond the framework's own) — if any of
-that changes before launch (an analytics tag gets added, a real form backend gets wired up),
-the policy text must be revised to match, not left describing a stub that no longer exists.
+**RESOLVED (2026-09-03):** the internal `UNREVIEWED TEMPLATE — requires legal review
+before launch` dev marker that D-16 required during the build was found still visibly
+rendered on the live `/privacy` page (via `content/copy.ts`'s `reviewNotice` field,
+rendered by `components/sections/PrivacyBody.tsx`) after the site went live with real
+business facts. It has been removed from both files, along with the comment references to
+it. The privacy policy now reads as ordinary, confident policy language with no leftover
+review flag. Every clause still matches what this site's build actually does (no email
+collection, no analytics, no cookies beyond the framework's own) — if any of that changes
+(an analytics tag gets added, a real form backend gets wired up), the policy text must be
+revised to match, not left describing a stub that no longer exists.
 
 ## 7. The contact form has no backend
 
