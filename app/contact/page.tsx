@@ -3,6 +3,7 @@
 // Locations grid (s02) is not built (D-02).
 import type { Metadata } from 'next';
 import { copy, contactMap } from '@/content/copy';
+import { business, SITE_URL } from '@/lib/business';
 import BusinessMap from '@/components/BusinessMap';
 import ContactConnect from '@/components/sections/ContactConnect';
 import ContactForm from '@/components/sections/ContactForm';
@@ -12,6 +13,20 @@ export const metadata: Metadata = {
   title: meta.title,
   description: meta.description,
   alternates: { canonical: '/contact/' },
+  openGraph: {
+    type: 'website',
+    siteName: business.name,
+    url: `${SITE_URL}/contact/`,
+    title: meta.title,
+    description: meta.description,
+    images: [{ url: `${SITE_URL}/placeholders/logo-wordmark.svg`, alt: business.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: meta.title,
+    description: meta.description,
+    images: [`${SITE_URL}/placeholders/logo-wordmark.svg`],
+  },
 };
 
 export default function Page() {

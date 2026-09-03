@@ -13,7 +13,7 @@ import { ROUTES, SITE_URL } from '@/lib/business';
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   return ROUTES.map((route) => ({
-    url: route === '/' ? `${SITE_URL}/` : `${SITE_URL}${route}`,
+    url: route === '/' ? `${SITE_URL}/` : `${SITE_URL}${route}/`,
     lastModified: now,
     changeFrequency: route === '/privacy' ? ('yearly' as const) : ('monthly' as const),
     priority: route === '/' ? 1 : 0.7,

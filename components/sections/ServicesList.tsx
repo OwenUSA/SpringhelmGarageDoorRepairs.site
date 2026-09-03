@@ -24,7 +24,7 @@ export default function ServicesList() {
       id={servicesList.id}
     >
       <div className={`band-inner ${s.inner}`}>
-        <h2 className="h-section">{servicesList.heading}</h2>
+        <h1 className="h-section">{servicesList.heading}</h1>
         <p className={`muted ${s.intro}`}>{servicesList.intro}</p>
 
         <div className={s.groupGrid}>
@@ -33,7 +33,7 @@ export default function ServicesList() {
               <img
                 className={s.groupImage}
                 src={IMAGES[i]}
-                alt=""
+                alt={`${group.symptom} — garage door repair in Apex, NC`}
                 width={339}
                 height={169}
               />

@@ -28,7 +28,12 @@ export default function ServicesGrid() {
         <div className={s.tileGrid}>
           {homeServicesGrid.cards.map((card, i) => (
             <div className={s.tile} key={card.title}>
-              <img src={IMAGES[i % IMAGES.length]} alt="" width={200} height={200} />
+              <img
+                src={IMAGES[i % IMAGES.length]}
+                alt={`${card.title} in Apex and west Raleigh, NC`}
+                width={200}
+                height={200}
+              />
               <h3 className="h-tile">
                 <a className={s.tileLink} href="/services/">{card.title}</a>
               </h3>

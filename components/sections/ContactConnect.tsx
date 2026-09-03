@@ -17,7 +17,7 @@ export default function ContactConnect() {
       id={contactConnect.id}
     >
       <div className={`band-inner band-inner--tight ${s.inner}`}>
-        <h2 className="h-section">{contactConnect.heading}</h2>
+        <h1 className="h-section">{contactConnect.heading}</h1>
         <a className={s.phoneLink} href={business.phoneHref}>{business.phone}</a>
 
         {/* THE one filled chromatic action on the page. */}

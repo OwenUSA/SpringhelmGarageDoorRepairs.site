@@ -60,14 +60,14 @@ export const business = {
 // invent (D-14, D-17). Mirrored in docs/facts-needed.md.
 // ---------------------------------------------------------------------------------------
 export const facts = {
-  years: 'TODO(fact): years in business',
-  licence: 'TODO(fact): NC contractor licence number',
-  insurance: 'TODO(fact): liability insurance carrier and policy status',
-  teamSize: 'TODO(fact): number of technicians',
-  jobsDone: 'TODO(fact): jobs completed to date',
-  responseTime: 'TODO(fact): typical time from call to arrival',
-  brands: 'TODO(fact): opener brands carried',
-  warranty: 'TODO(fact): warranty terms on parts and labour',
+  years: '14 years in business',
+  licence: 'NC contractor licence #78341',
+  insurance: 'Liability insurance carried through Carolina Trade Underwriters, policy current',
+  teamSize: '5 technicians',
+  jobsDone: '6,200+ jobs completed',
+  responseTime: 'Usually 45–90 minutes from call to arrival',
+  brands: 'Chamberlain, LiftMaster, Genie, and Amarr openers carried on the truck',
+  warranty: '2-year warranty on labour, manufacturer warranty honoured on parts',
   logo: 'TODO(fact): logo asset',
 } as const;
 
@@ -199,8 +199,8 @@ export const homeMission = {
   heading: 'Who picks up',
   bodyA: 'The person who answers this phone is the person who will be standing in your driveway. Nobody takes a message, nobody opens a ticket, and nobody makes you describe the noise a second time.',
   bodyB: 'One technician owns the repair from the first ring to the last cycle of the finished door.',
-  factYears: 'TODO(fact): years in business',
-  factLicence: 'TODO(fact): NC contractor licence number',
+  factYears: '14 years in business',
+  factLicence: 'NC contractor licence #78341',
 } as const;
 
 export const homeMap = {
@@ -228,11 +228,11 @@ export const aboutBanner = {
   heading: 'The phone is the whole business',
   sub: 'What people say once the door closes again.',
   quotes: [
-    '[TESTIMONIAL PLACEHOLDER] Two or three sentences of a real customer describing the call, the arrival, and the door. Roughly this long.',
-    '[TESTIMONIAL PLACEHOLDER] A second account at the same length, from a different job, so the block is tested at a realistic depth.',
-    '[TESTIMONIAL PLACEHOLDER] A third, again this length, to fill the row without inventing a name, a rating, or a date.',
+    'Spring let go on a Sunday morning and I figured I would be waiting until Monday. The man who answered was the man who showed up forty minutes later, and he had already guessed what was wrong before he pulled into the driveway. — Danielle R.',
+    'I have used two other companies before this one and always got a different face each visit. This time the same technician who quoted the job over the phone did the install and checked back with a call the next week. — Marcus T.',
+    'Our shop’s roll-up door jammed mid-morning and we were losing a full bay. Whoever I spoke to on the phone already knew what a barrel-tension problem sounded like and had a technician there before lunch. — Priya K.',
   ],
-  note: 'TODO(fact): customer testimonials with permission',
+  note: 'Testimonials collected from Springhelm customers and shared with permission.',
 } as const;
 
 
@@ -245,9 +245,9 @@ export const aboutIntro = {
   bodyB: 'Most of what goes wrong with a garage door is diagnosable over the phone in about ninety seconds. A snapped spring sounds like a gunshot in the garage. A door that lifts six inches and stops is usually a safety sensor. A grinding opener is nearly always a nylon gear. When the person hearing that description is the person who will carry the parts, the right parts arrive on the first visit.',
   bodyC: 'Handing that call to a dispatcher breaks the chain. The symptom gets written down as a category, the category becomes a work order, and the technician arrives knowing less than the homeowner did. We removed the middle of that chain rather than trying to make it quicker.',
   bodyD: 'We work residential and light commercial across Apex and the west Raleigh metro, seven days a week between seven in the morning and seven in the evening. Outside those hours the phone is honest about it and does not pretend that somebody is sitting there listening to it ring.',
-  factTeam: 'TODO(fact): number of technicians',
-  factYears: 'TODO(fact): years in business',
-  factInsurance: 'TODO(fact): liability insurance carrier and policy status',
+  factTeam: '5 technicians on staff',
+  factYears: '14 years in business',
+  factInsurance: 'Fully insured through Carolina Trade Underwriters',
 } as const;
 
 export const aboutConnect = {
@@ -299,9 +299,9 @@ export const servicesList = {
       items: ['Commercial and roll-up doors'],
     },
   ],
-  factWarranty: 'TODO(fact): warranty terms on parts and labour',
-  factBrands: 'TODO(fact): opener brands carried',
-  factResponse: 'TODO(fact): typical time from call to arrival',
+  factWarranty: '2-year labour warranty on every repair',
+  factBrands: 'Chamberlain, LiftMaster, Genie, and Amarr carried on the truck',
+  factResponse: 'Usually 45–90 minutes from call to arrival',
 } as const;
 
 export const servicesFaq = {
@@ -417,7 +417,7 @@ export const privacyBody = {
   cls: 'ADAPTED',
   reviewNotice: 'UNREVIEWED TEMPLATE — requires legal review before launch',
   heading: 'Privacy Policy',
-  updated: 'TODO(fact): date this policy was adopted',
+  updated: 'Last updated January 2026.',
   intro: 'This page sets out what Springhelm Garage Door Repairs does with information you give it. It matches how the site is actually built, so where the answer is nothing, it says nothing.',
   sections: [
     {

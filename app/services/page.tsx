@@ -2,6 +2,7 @@
 // symptom list and the FAQ. A2: services-faq is NOVEL; the reference has zero accordions.
 import type { Metadata } from 'next';
 import { copy } from '@/content/copy';
+import { business, SITE_URL } from '@/lib/business';
 import ServicesList from '@/components/sections/ServicesList';
 import ServicesFaq from '@/components/sections/ServicesFaq';
 import ServicesBanner from '@/components/sections/ServicesBanner';
@@ -11,6 +12,20 @@ export const metadata: Metadata = {
   title: meta.title,
   description: meta.description,
   alternates: { canonical: '/services/' },
+  openGraph: {
+    type: 'website',
+    siteName: business.name,
+    url: `${SITE_URL}/services/`,
+    title: meta.title,
+    description: meta.description,
+    images: [{ url: `${SITE_URL}/placeholders/logo-wordmark.svg`, alt: business.name }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: meta.title,
+    description: meta.description,
+    images: [`${SITE_URL}/placeholders/logo-wordmark.svg`],
+  },
 };
 
 export default function Page() {

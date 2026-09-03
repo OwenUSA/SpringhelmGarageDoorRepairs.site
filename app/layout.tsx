@@ -50,6 +50,18 @@ export const metadata: Metadata = {
     url: SITE_URL,
     title: copy.routes['/'].meta.title,
     description: copy.routes['/'].meta.description,
+    images: [
+      {
+        url: `${SITE_URL}/placeholders/logo-wordmark.svg`,
+        alt: business.name,
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: copy.routes['/'].meta.title,
+    description: copy.routes['/'].meta.description,
+    images: [`${SITE_URL}/placeholders/logo-wordmark.svg`],
   },
   robots: { index: true, follow: true },
 };

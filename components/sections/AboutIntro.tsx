@@ -29,14 +29,14 @@ export default function AboutIntro() {
           <img
             className={s.photo}
             src="/placeholders/about-intro-photo.svg"
-            alt=""
+            alt="Springhelm Garage Door Repairs technician working on a garage door in Apex, NC"
             width={1112}
             height={556}
           />
           <img
             className={s.secondary}
             src="/placeholders/about-intro-secondary.svg"
-            alt=""
+            alt="Springhelm Garage Door Repairs service vehicle and tools"
             width={532}
             height={266}
           />
