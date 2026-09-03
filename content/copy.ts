@@ -429,7 +429,7 @@ export const privacyBody = {
     },
     {
       h: 'Where the form goes',
-      p: 'Nowhere, at present. The form has no submission target: it validates inside your browser, shows a confirmation, and forgets what you typed when the page closes. Until that changes, the phone number is the only reliable way to reach us.',
+      p: 'Nowhere, at present. The form does not submit to a server: it validates inside your browser, shows a confirmation, and forgets what you typed when the page closes. The phone number is the only reliable way to reach us.',
     },
     {
       h: 'Cookies and similar storage',
