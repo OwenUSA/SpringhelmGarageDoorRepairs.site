@@ -9,7 +9,11 @@ import ServicesGrid from '@/components/sections/ServicesGrid';
 import Mission from '@/components/sections/Mission';
 
 const meta = copy.routes['/'].meta;
-export const metadata: Metadata = { title: meta.title, description: meta.description };
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: { canonical: '/' },
+};
 
 export default function Page() {
   return (

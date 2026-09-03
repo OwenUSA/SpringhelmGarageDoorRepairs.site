@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Lato, Ubuntu } from 'next/font/google';
 import { copy, siteHeader } from '@/content/copy';
-import { localBusinessJsonLd } from '@/lib/business';
+import { business, localBusinessJsonLd, SITE_URL } from '@/lib/business';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import MobileCallBar from '@/components/MobileCallBar';
@@ -35,9 +35,23 @@ const ubuntu = Ubuntu({
 // twice. Both are structurally impossible here: every title and description is a single
 // value read from content/copy.ts, no route file declares a literal, and nothing is
 // concatenated onto a title after the fact. Verify over HTTP, not by reading this file.
+// metadataBase + canonicals: the site is now deployed at SITE_URL behind nginx, so every
+// relative metadata URL needs an origin to resolve against and every route needs to name
+// its own canonical. Canonicals carry the trailing slash because next.config sets
+// trailingSlash: true and the export emits /about/index.html.
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: copy.routes['/'].meta.title,
   description: copy.routes['/'].meta.description,
+  alternates: { canonical: '/' },
+  openGraph: {
+    type: 'website',
+    siteName: business.name,
+    url: SITE_URL,
+    title: copy.routes['/'].meta.title,
+    description: copy.routes['/'].meta.description,
+  },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

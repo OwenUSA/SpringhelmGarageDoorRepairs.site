@@ -7,7 +7,11 @@ import AboutIntro from '@/components/sections/AboutIntro';
 import AboutConnect from '@/components/sections/AboutConnect';
 
 const meta = copy.routes['/about'].meta;
-export const metadata: Metadata = { title: meta.title, description: meta.description };
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: { canonical: '/about/' },
+};
 
 export default function Page() {
   return (

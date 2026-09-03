@@ -4,7 +4,11 @@ import { copy } from '@/content/copy';
 import PrivacyBody from '@/components/sections/PrivacyBody';
 
 const meta = copy.routes['/privacy'].meta;
-export const metadata: Metadata = { title: meta.title, description: meta.description };
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: { canonical: '/privacy/' },
+};
 
 export default function Page() {
   return (

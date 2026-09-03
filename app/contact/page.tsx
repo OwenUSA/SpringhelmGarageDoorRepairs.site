@@ -8,7 +8,11 @@ import ContactConnect from '@/components/sections/ContactConnect';
 import ContactForm from '@/components/sections/ContactForm';
 
 const meta = copy.routes['/contact'].meta;
-export const metadata: Metadata = { title: meta.title, description: meta.description };
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: { canonical: '/contact/' },
+};
 
 export default function Page() {
   return (

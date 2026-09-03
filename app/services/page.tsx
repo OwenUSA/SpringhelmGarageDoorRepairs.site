@@ -7,7 +7,11 @@ import ServicesFaq from '@/components/sections/ServicesFaq';
 import ServicesBanner from '@/components/sections/ServicesBanner';
 
 const meta = copy.routes['/services'].meta;
-export const metadata: Metadata = { title: meta.title, description: meta.description };
+export const metadata: Metadata = {
+  title: meta.title,
+  description: meta.description,
+  alternates: { canonical: '/services/' },
+};
 
 export default function Page() {
   return (

@@ -30,7 +30,7 @@ export default function ServicesGrid() {
             <div className={s.tile} key={card.title}>
               <img src={IMAGES[i % IMAGES.length]} alt="" width={200} height={200} />
               <h3 className="h-tile">
-                <a className={s.tileLink} href="/services">{card.title}</a>
+                <a className={s.tileLink} href="/services/">{card.title}</a>
               </h3>
               <p className="muted">{card.body}</p>
             </div>

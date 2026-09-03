@@ -49,7 +49,7 @@ export default function ServicesList() {
                   <a className={`btn btn--ghost-dark ${s.groupBtn}`} href={business.phoneHref}>
                     Call about this
                   </a>
-                  <a className={s.groupLink} href="/contact">
+                  <a className={s.groupLink} href="/contact/">
                     Request a callback instead
                   </a>
                 </div>
